@@ -438,7 +438,7 @@ mf_inset_off()
 #| cache: false
 library(mapsf)
 mf_theme("default")
-knitr::opts_chunk$set(cache <- FALSE)
+knitr::opts_chunk$set(cache = FALSE)
 ```
 
 
@@ -497,7 +497,7 @@ my_theme <- mf_theme(x = "default", bg = "lightblue",
 mf_init(khm, theme = my_theme, expandBB = c(0,0,0,.5))
 mf_map(land, add = T, col = "grey", border = NA)
 mf_map(khm, 'sex_ratio',"choro", 
-       breaks = bks, pal = pals, 
+       breaks = bks, pal = pals,  leg_pos = "bottomright",
        leg_val_rnd = 3, add = TRUE)
 
 mf_inset_on(x = khm[khm$ADM1_EN=="Phnom Penh", ], cex = .3)
@@ -513,7 +513,7 @@ mf_title('Sex Ratio')
 
 7. Export the map in PNG format with a width of 800 pixels. 
 ```{r}
-mf_export(khm, filename = "khm.png", 
+mf_export(khm, filename = "img/khm.png", 
           width = 800, expandBB = c(0,0,0,.5), 
           theme = my_theme)
 mf_map(land,  col = "#f2efe9", border = NA, add = T)
@@ -524,41 +524,41 @@ mf_init(khm[khm$ADM1_EN=="Phnom Penh", ], theme = my_theme)
 mf_map(khm, 'sex_ratio',"choro", breaks = bks, pal = pals, 
        add = T, leg_pos = NA)
 mf_title("Phnom Penh")
-box(which = "plot")
+# box(which = "plot")
 mf_inset_off()
 mf_title('Sex Ratio')
 
 dev.off()
 ```
 
-![](khm.png)
+![](img/khm.png)
 
 8. Create the same map combining the population and the sex ratio
 
 ```{r}
-mf_export(khm, filename = "khm2.png", 
+mf_export(khm, filename = "img/khm2.png", 
           width = 800, expandBB = c(0,0,0,.5), 
           theme = my_theme)
 mf_map(land,  col = "#f2efe9", border = NA, add = T)
 mf_map(khm, add = T, col = "#c2dcb6", lwd =.7, border = "grey60")
 mf_map(khm, c('T_TL', 'sex_ratio'),"prop_choro", 
        breaks = bks, pal = pals, 
-       leg_val_rnd = c(0,3), border = "grey95",
+       leg_val_rnd = c(0,3),
        leg_pos = c("bottomright", c(901474.8, 1307543)),
-       inches = .15)
+       inches = .1)
 mf_inset_on(x = khm[khm$ADM1_EN=="Phnom Penh", ], cex = .3)
 mf_init(khm[khm$ADM1_EN=="Phnom Penh", ], theme = my_theme)
-mf_map(khm, add = T, col = "#c2dcb6")
-mf_map(khm, c('T_TL', 'sex_ratio'),"prop_choro", inches = .15,
+mf_map(khm, add = T, col = "#c2dcb6", lwd =.7, border = "grey60")
+mf_map(khm, c('T_TL', 'sex_ratio'),"prop_choro", inches = .1,
        breaks = bks, pal = pals, leg_pos = c(NA, NA))
 mf_title("Phnom Penh")
-box(which = "plot")
+# box(which = "plot")
 mf_inset_off()
 mf_title('Pop & Sex Ratio')
 dev.off()
 
 ```
-![](khm2.png)
+![](img/khm2.png)
 
 
 
