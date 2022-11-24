@@ -5,7 +5,7 @@ knitr:
     comment: "#>" 
     fig.height: 8 
     fig.width: 8
-    cache: FALSE
+    cache: true
 ---
 
 # Map layout
@@ -431,3 +431,135 @@ mf_worldmap(com)
 mf_inset_off()
 ```
 :::
+
+
+```{r}
+#| echo: false
+#| cache: false
+library(mapsf)
+mf_theme("default")
+knitr::opts_chunk$set(cache <- FALSE)
+```
+
+
+
+
+## Exercice
+
+1. Import the **khm** and **land** layers from the geopackage file **data/khm.gpkg**.
+
+```{r}
+library(sf)
+khm <- st_read("data/khm.gpkg", "khm")
+land <- st_read("data/khm.gpkg", "land")
+```
+
+
+2. Compute the sex ratio of Cambodian regions. 
+```{r}
+khm$sex_ratio <- khm$M_TL / khm$F_TL
+```
+
+3. Create a map of the sex ratio
+
+```{r}
+library(mapsf)
+bks <- mf_get_breaks(khm$sex_ratio, breaks = "msd", central = T)
+pals <- mf_get_pal(n = c(3,3), palette = c('Peach', 'Teal'), neutral = "grey90")
+
+mf_map(khm, 'sex_ratio',"choro", breaks = bks, pal = pals, leg_val_rnd = 3)
+
+```
+
+4. Add all relevant layout elements
+
+:::{.callout-note}
+You can also add the land around Cambodia for example:
+```{r}
+#| fig.width: 3
+#| fig-height: 3
+mf_init(khm)
+mf_map(land, add = T, col = "grey", border = NA)
+mf_map(khm, add = T, col = "lightgreen")
+```
+:::
+
+5. Use a personalized theme
+
+```{r}
+my_theme <- mf_theme(x = "default", bg = "lightblue", 
+                     tab = FALSE, mar = c(0,0,1.2,0))
+```
+
+6. Add an inset of Pnomh Penh Region
+
+```{r}
+mf_init(khm, theme = my_theme, expandBB = c(0,0,0,.5))
+mf_map(land, add = T, col = "grey", border = NA)
+mf_map(khm, 'sex_ratio',"choro", 
+       breaks = bks, pal = pals, 
+       leg_val_rnd = 3, add = TRUE)
+
+mf_inset_on(x = khm[khm$ADM1_EN=="Phnom Penh", ], cex = .3)
+mf_init(khm[khm$ADM1_EN=="Phnom Penh", ], theme = "default")
+mf_map(khm, 'sex_ratio',"choro", breaks = bks, pal = pals, 
+       add = T, leg_pos = NA)
+mf_title("Phnom Penh")
+mf_inset_off()
+mf_title('Sex Ratio')
+
+```
+
+
+7. Export the map in PNG format with a width of 800 pixels. 
+```{r}
+mf_export(khm, filename = "khm.png", 
+          width = 800, expandBB = c(0,0,0,.5), 
+          theme = my_theme)
+mf_map(land,  col = "#f2efe9", border = NA, add = T)
+mf_map(khm, 'sex_ratio',"choro", breaks = bks, pal = pals, 
+       leg_val_rnd = 3, add = T)
+mf_inset_on(x = khm[khm$ADM1_EN=="Phnom Penh", ], cex = .3)
+mf_init(khm[khm$ADM1_EN=="Phnom Penh", ], theme = my_theme)
+mf_map(khm, 'sex_ratio',"choro", breaks = bks, pal = pals, 
+       add = T, leg_pos = NA)
+mf_title("Phnom Penh")
+box(which = "plot")
+mf_inset_off()
+mf_title('Sex Ratio')
+
+dev.off()
+```
+
+![](khm.png)
+
+8. Create the same map combining the population and the sex ratio
+
+```{r}
+mf_export(khm, filename = "khm2.png", 
+          width = 800, expandBB = c(0,0,0,.5), 
+          theme = my_theme)
+mf_map(land,  col = "#f2efe9", border = NA, add = T)
+mf_map(khm, add = T, col = "#c2dcb6", lwd =.7, border = "grey60")
+mf_map(khm, c('T_TL', 'sex_ratio'),"prop_choro", 
+       breaks = bks, pal = pals, 
+       leg_val_rnd = c(0,3), border = "grey95",
+       leg_pos = c("bottomright", c(901474.8, 1307543)),
+       inches = .15)
+mf_inset_on(x = khm[khm$ADM1_EN=="Phnom Penh", ], cex = .3)
+mf_init(khm[khm$ADM1_EN=="Phnom Penh", ], theme = my_theme)
+mf_map(khm, add = T, col = "#c2dcb6")
+mf_map(khm, c('T_TL', 'sex_ratio'),"prop_choro", inches = .15,
+       breaks = bks, pal = pals, leg_pos = c(NA, NA))
+mf_title("Phnom Penh")
+box(which = "plot")
+mf_inset_off()
+mf_title('Pop & Sex Ratio')
+dev.off()
+
+```
+![](khm2.png)
+
+
+
+
