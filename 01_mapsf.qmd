@@ -1,0 +1,85 @@
+# `mapsf` 
+
+## Introduction
+
+<img src="img/logo.png" align="right" alt="" width="120" />
+
+
+The R spatial ecosystem is rich, dynamic and mature and several packages allow to import, process and represent spatial data. The [`mapsf`](https://CRAN.R-project.org/package=mapsf) package [@R-mapsf] relies on this ecosystem to integrate the creation of quality thematic maps in R workflows. `mapsf` uses [`sf`](https://CRAN.R-project.org/package=sf) objects to produce `base` graphics.  
+
+![A typical workflow](img/workflow.png)
+
+We will mainly use `mapsf` in this document as it has a quite complete set of features, it is easy to use and it is relatively lightweight.
+
+```{r, echo = FALSE, eval = FALSE, results='hide'}
+library(deepdep)
+dep <- deepdep("mapsf", depth = 6)
+png("img/deps.png", width  = 600, height = 450)
+plot_dependencies(dep, "circular", same_level = TRUE, reverse = TRUE, main = 'toto')
+dev.off()
+```
+
+![A minimal number of well-known dependancies](img/deps.png)
+
+
+
+The aim of `mapsf` is to obtain thematic maps with the visual quality of those build with a classical mapping or GIS software.  
+Users of the package could belong to one of two categories: **cartographers willing to use R** or **R users willing to create maps**. Therefore, its functions have to be intuitive to cartographers and ensure compatibility with common R workflows.  
+
+
+`mapsf` functions can be classified in the following categories:
+
+- **Symbology**  
+The main function, `mf_map()`, displays map layers on a georeferenced plot. It has three main arguments ( `x`, an `sf` object; `var`, the name(s) of a variable(s) to map;`type`, the map layer type).  Many parameters are available to fine tune the cartographic representations. These parameters are the common ones found in GIS and automatic cartography tools (e.g. classification and color palettes used in choropleth maps, symbols sizes used in proportional symbols maps...).
+
+- **Map Layout**    
+Along with the cartographic functions, some other functions are dedicated to layout design (e.g. legends, scale bar, north arrow, title, credits...).
+
+- **Utility Functions**   
+A set of functions is dedicated to the creation of spatial objects (e.g. links creation) or other utility tasks (e.g. color palette management, class intervals extraction, sample dataset import...).  
+
+:::{.callout-note}
+`mapsf` is the successor of [`cartography`](https://github.com/riatelab/cartography)[@giraud2016]. See [`mapsf` vignette](https://riatelab.github.io/mapsf/articles/mapsf.html#symbology) to migrate from `cartography` to `mapsf`.
+:::
+
+
+
+:::{.callout-note}
+## Other packages can be used to create thematic maps with R:  
+
+- The `ggplot2` package [@Wickham16], in association with the `ggspatial` package [@R-ggspatial], allows for example to display spatial objects and to make simple thematic maps.  
+- The `tmap` package [@Tennekes18] is dedicated to the creation of thematic maps, it uses a syntax close to that of `ggplot2` (sequence of instructions combined with the '+' sign).
+
+Documentation and tutorials to use these two packages are easily available on the web.
+:::
+
+
+
+## Documentation
+
+* A [website](https://riatelab.github.io/mapsf/)  
+
+![](img/websitev.png)
+
+* A ['Get started'](https://riatelab.github.io/mapsf/articles/mapsf.html) vignette.
+
+* 'How to' vignettes: 
+  - [How to create faceted maps](https://riatelab.github.io/mapsf/articles/web_only/how_to_create_faceted_maps.html)
+  - [How to create inset maps](https://riatelab.github.io/mapsf/articles/web_only/how_to_create_inset_maps.html)
+  - [How to export maps](https://riatelab.github.io/mapsf/articles/web_only/how_to_export_maps.html)
+  - [How to use a custom font family](https://riatelab.github.io/mapsf/articles/web_only/how_to_use_a_custom_font_family.html)
+  - [How to use themes](https://riatelab.github.io/mapsf/articles/web_only/how_to_use_themes.html)
+
+* A [cheat sheet](https://raw.githubusercontent.com/riatelab/mapsf/master/vignettes/web_only/img/mapsf_cheatsheet.pdf)  
+
+![](img/mapsf_cheatsheet.png)
+
+
+
+
+## Exercice 
+
+1. Install `mapsf`.    
+2. What is the version of the package?  
+3. What is new in the package?  
+

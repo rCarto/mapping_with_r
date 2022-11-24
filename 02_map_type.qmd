@@ -1,0 +1,192 @@
+---
+knitr:
+  opts_chunk: 
+    collapse: false
+    comment: "#>" 
+    fig.height: 8 
+    fig.width: 8
+    cache: true
+---
+
+
+# Map types
+
+`mf_map()` displays map layers on a georeferenced plot. It has three main arguments:
+
+  - `x`, an `sf` object
+  -  `var`, the name(s) of a variable(s) to map
+  -  `type`, the map layer type
+
+
+## Example dataset
+
+The following code imports relevant layers from the [geopackage](https://www.geopackage.org/) file **lot46.gpkg**.
+
+```{r}
+library(sf)
+# import municipalities
+com <- st_read("data/lot46.gpkg", layer = "commune", quiet = TRUE)
+# import departments
+dep <- st_read("data/lot46.gpkg", layer = "departement", quiet = TRUE)
+# import restaurants
+resto <- st_read("data/lot46.gpkg", layer = "restaurant", quiet = TRUE)
+# import roads
+route <- st_read("data/lot46.gpkg", layer = "route", quiet = TRUE)
+```
+
+
+## Plot a base map
+
+`mf_map(x, type = "base")` displays `sf` objects geometries. 
+
+```{r mf_base}
+library(mapsf)
+# Municipalities
+mf_map(x = com, border = "white")
+mf_map(x = dep, lwd = 2, col = NA, add = TRUE)
+mf_map(x = route, lwd = .5, col = "ivory4", add = TRUE)
+mf_map(x = resto, pch = 20, cex = .7, col = "darkred", add = TRUE)
+```
+
+
+## Proportional Symbols
+
+`mf_map(x, var, type = "prop")` displays symbols with areas proportional to a quantitative variable (stocks). The `inches` argument is used to customize the symbols sizes.
+
+```{r proportional_symbols}
+# Municipalities
+mf_map(x = com)
+# Proportional Symbols
+mf_map(
+  x = com, 
+  var = "POPULATION",
+  type = "prop",
+  leg_title = "Total population\n(2015)"
+)
+# Title
+mf_title("Population distribution in the Lot department")
+```
+
+
+## Choropleth Map
+
+In choropleth maps, areas are shaded according to the variation of a quantitative variable. They are used to represent ratios or indices.  
+`mf_map(x, var, type = "choro")` displays choropleth maps . Arguments `nbreaks`, and `breaks` allow to customize the variable classification. `mf_get_breaks()` allows to classify data outside of the function itself. 
+
+
+
+```{r choro}
+# Population density
+com$DENS <- 1e6 * com$POP / as.numeric(st_area(com))
+mf_map(
+  x = com,
+  var = "DENS",
+  type = "choro",
+  breaks = "quantile",
+  pal = "Dark Mint",
+  lwd = 1,
+  leg_title = "Population density\n(inh. per km2)", 
+  leg_val_rnd = 0
+)
+mf_title("Population distribution in the Lot department")
+```
+
+
+
+### Color palettes {#palettes}
+
+Colors palettes, defined with `pal`, can be created with `mf_get_pal()` or you can use palette names from `hcl.pals()`.
+
+```{r pal1}
+mf_map(x = com, var = "DENS", type = "choro",
+       breaks = "quantile", nbreaks = 4, pal = "Mako")
+```
+
+![](img/swatch-plot-1.svg)
+
+`mf_get_pal()` builds sequential, diverging and qualitative color palettes. Diverging color palettes can be dissymmetric (different number of colors in each of the two gradients).
+
+```{r pal2,  fig.height=3, nm=TRUE}
+mypal <- mf_get_pal(n = c(6,3), palette = c("Burg", "Teal"))
+image(1:9, 1, as.matrix(1:9), col=mypal, xlab = "", ylab = "", xaxt = "n",
+      yaxt = "n",bty = "n")
+```
+
+
+
+
+## Typology Map
+
+`mf_map(x, var, type = "typo")` displays a typology map of a qualitative variable. 
+
+```{r typo_simple}
+mf_map(
+  x = com,
+  var = "STATUT",
+  type = "typo",
+  pal = c("aquamarine4", "yellow3","wheat"),
+  lwd = .7,
+  leg_title = ""
+)
+mf_title("Municipality status")
+```
+
+
+`val_order` can be used to set the modalities order in the legend.
+
+```{r typo_order}
+mf_map(
+  x = com,
+  var="STATUT",
+  type = "typo",
+  pal = c("aquamarine4", "yellow3","wheat"),
+  val_order = c("Préfecture", "Sous-préfecture", "Commune simple"),
+  lwd = .7,
+  leg_title = ""
+)
+mf_title("Municipality status")
+```
+
+
+
+## Proportional Symbols using Choropleth Coloration
+
+`mf_map(x, var, type = "prop_choro")` creates a map of symbols that are proportional to values of a first variable and colored to reflect the classification of a second variable.
+
+
+```{r choroprop}
+mf_map(x = com)
+mf_map(
+  x = com,
+  var = c("POPULATION", "DENS"),
+  type = "prop_choro",
+  border = "grey50",
+  lwd = 1,
+  leg_pos = c("topright", "topleft"),
+  leg_title = c("Population", "Population density\n(inh. per km2)"), 
+  breaks = "q6",
+  pal = "Magenta",
+  leg_val_rnd = c(0,1))
+mf_title("Population")
+```
+
+## Proportional Symbols using Typology Coloration
+
+`mf_map(x, var, type = "prop_typo")` creates a map of symbols that are proportional to values of a first variable and colored to reflect the modalities of a second qualitative variable.
+
+```{r typoprop}
+mf_map(x = com)
+mf_map(
+  x = com,
+  var = c("POPULATION", "STATUT"),
+  type = "prop_typo",
+  pal = c("aquamarine4", "yellow3","wheat"),
+  val_order = c("Préfecture", "Sous-préfecture", "Commune simple"),
+  leg_pos = c("bottomleft","topleft"),
+  leg_title = c("Population\n(2015)",
+                "Municipality status"),
+)
+mf_title("Population")
+```
+  
+

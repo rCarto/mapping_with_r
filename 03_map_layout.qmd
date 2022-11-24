@@ -1,0 +1,433 @@
+---
+knitr:
+  opts_chunk: 
+    collapse: false
+    comment: "#>" 
+    fig.height: 8 
+    fig.width: 8
+    cache: FALSE
+---
+
+# Map layout
+
+```{r}
+#| include: false
+
+library(sf)
+# import des communes du Lot
+com <- st_read("data/lot46.gpkg", layer = "commune", quiet = TRUE)
+# import des départments français
+dep <- st_read("data/lot46.gpkg", layer = "departement", quiet = TRUE)
+# import des restaurants
+resto <- st_read("data/lot46.gpkg", layer = "restaurant", quiet = TRUE)
+# import des routes
+route <- st_read("data/lot46.gpkg", layer = "route", quiet = TRUE)
+```
+
+```{r knitr3_init, echo=FALSE, cache=FALSE}
+library(knitr)
+## Global options
+options(max.print="90")
+opts_chunk$set(fig.height=5,
+               fig.width=5)
+```
+
+
+## Themes
+
+**`mf_theme()`** sets a map theme. A theme is a set of graphical parameters that are applied to maps created with `mapsf`. These parameters are the figure margins, background and foreground colors and `mf_title()` options. `mapsf` offers some builtin themes. It's possible to modify an existing theme or to start a theme from scratch. The map theme can also be set with `mf_init()` and `mf_export()`.
+
+### Using a predefined theme
+
+
+```{r them1, fig.show='hold', fig.width =8, fig.height = 8}
+library(mapsf)
+opar <- par(mfrow = c(2,2))
+mf_theme("default")
+mf_map(com)
+mf_title("Theme : 'default'")
+mf_theme("darkula")
+mf_map(com)
+mf_title("Theme : 'darkula'")
+mf_theme("candy")
+mf_map(com)
+mf_title("Theme : 'candy'")
+mf_theme("nevermind")
+mf_map(com)
+mf_title("Theme : 'nevermind'")
+par(opar)
+
+```
+
+### How to modify an existing theme
+
+It is possible to modify an existing theme. In this example we use the "default" theme and modify some title parameters. 
+
+```{r theme2, fig.width = 8, fig.height = 4, fig.show='hold'}
+library(mapsf)
+opar <- par(mfrow = c(1,2))
+mf_theme("default")
+mf_map(com)
+mf_title("default")
+mf_theme(
+  x = "default", 
+  tab = FALSE, 
+  font = 4, 
+  bg = "grey60", 
+  pos = "center"
+)
+mf_map(com)
+mf_title("modified default")
+par(opar)
+```
+
+### How to create a new theme
+
+It is possible to create a new theme. 
+
+
+```{r}
+mf_theme(
+  bg = "lightblue",   
+  fg = "tomato1",      
+  mar = c(0,0,1.5,0),
+  tab = FALSE,        
+  inner = FALSE,       
+  line = 1.5,          
+  pos = "center",      
+  cex = 1.2,           
+  font = 2  
+)
+mf_map(com)
+mf_title("New theme")
+```
+
+
+
+
+## Les titres
+
+`mf_title()` plots a tile on the map. 
+
+
+```{r}
+mf_theme("default")
+mf_map(com)
+mf_title("Map title")
+```
+
+
+The title parameters can be modified.
+
+```{r}
+mf_map(com)
+mf_title(
+  txt = "Map title", 
+  pos = "center", 
+  tab = FALSE, 
+  bg = "tomato3", 
+  fg = "lightblue", 
+  cex = 1, 
+  line = 1.2, 
+  font = 1, 
+  inner = FALSE
+)
+```
+
+
+
+
+
+## North arrow
+`mf_arrow()` plots a north arrow on the map. 
+
+```{r north}
+mf_map(com)
+mf_arrow()
+```
+
+
+## Scale bar
+
+`mf_scale()` plots a scale bar on the map.
+
+```{r scale}
+mf_map(com)
+mf_scale(
+  size = 20,
+  lwd = 2,
+  cex = 1.2,
+)
+```
+
+
+## Credits
+
+`mf_credits()` plots credits at the bottom of the map.
+```{r credit}
+mf_map(com)
+mf_credits("Source: ..... \nAuthors: ............")
+```
+
+
+## Full map layout
+
+`mf_layout()` add a complete layout to the map (title, credits, north arrow, scale bar). Each layout elements can also be set separately (with `mf_title()`, `mf_credits()`, `mf_arrow()` and `mf_scale()`).
+
+```{r layout1}
+mf_map(com)
+mf_layout(
+  title = "Le Lot",
+  credits = "Author: .......\nSources: ................",
+  arrow = TRUE
+)
+```
+
+
+## Annotations
+
+
+```{r}
+# select a municipality
+cahors <- com[com$NOM_COM == "Cahors", ]
+mf_map(com)
+mf_annotation(
+  x = cahors, 
+  txt = "Cahors", 
+  halo = TRUE, 
+  cex = 1.5
+)
+```
+
+
+## Legends
+
+
+```{r}
+mf_map(com)
+mf_legend(
+  type = "prop", 
+  val = c(1000,500,200,10), 
+  inches = .4, 
+  title = "Population", 
+  pos = "topleft"
+)
+mf_legend(
+  type = "choro", 
+  val = c(0,10,20,30,40),
+  pal = "Greens", 
+  pos = "bottomright", 
+  val_rnd = 0
+)
+
+
+
+```
+
+
+
+## Labels
+
+`mf_label()` displays labels on the map.
+
+```{r labs}
+# select a set of municipalities
+
+com_sel <- 
+  com[st_intersects(com, com[com$NOM_COM == "Cahors", ], sparse = F), ]
+
+mf_map(com_sel)
+mf_label(
+  x = com_sel,
+  var = "NOM_COM",
+  col= "black",
+  halo = TRUE,
+  overlap = FALSE, 
+  lines = FALSE
+)
+mf_scale()
+```
+
+If `halo = TRUE` then a halo is printed around the text.  
+If `overlap = FALSE` then labels are moved so they do not overlap.
+
+
+
+## Center the map on a specific area
+
+`mf_init()` is designed to initiate a map centered on a specific extent (`x` bbox). The `theme` argument allows to select a theme.
+
+:::{.callout-note}
+Always use `add = TRUE` after `mf_init()`.
+:::
+
+
+```{r}
+mf_init(x = com_sel, theme = "iceberg")
+mf_map(com, add = TRUE)
+mf_map(com_sel, col = NA, border = "red", lwd = 2, add = TRUE)
+```
+
+
+
+
+
+
+## Display several maps on the same figure
+
+To plot several maps on the same figure, the user can use the `mfrow` argument of the `par()` function before plotting the maps. 
+For example, use `par(mfrow = c(1, 2))` (i.e. 1 row, 2 columns) to plot two maps side by side). 
+
+
+```{r mfrow0, fig.width=7, fig.height = 3.5,  eval = TRUE}
+# define the figure layout (1 row, 2 columns)
+par(mfrow = c(1, 2))
+# define theme
+mf_theme("default", mar = c(0,0,1.2,0), tab = FALSE, pos = "center")
+# first map
+mf_map(com)
+mf_map(com, "TER_F", "prop", 
+       val_max = 4000, 
+       leg_pos = "topleft", 
+       leg_title = "n.")
+mf_title("Tertiary: Women")
+# second map
+mf_map(com)
+mf_map(com, "TER_H", "prop", 
+       val_max = 4000, 
+       leg_pos = NA)
+mf_title("Men")
+```
+
+## Export maps
+
+`mf_export()` exports maps in PNG or SVG formats.   
+The exported map width/height ratio will match the one of a spatial object.   
+If `width` is specified, then `height` is deduced from the width/height ratio of `x`, figure margins and title size.  
+If `height` is specified, then `width` is deduced from the width/height ratio of `x`, figure margins and title size. 
+
+Additionally, `mf_export()` can be used to set a theme, to extend the map space on one or several side of the figure, or to center a map on a specific area.
+
+:::{.callout-note}
+Always use `add = TRUE` after `mf_export()` and do not forget to add `dev.off()` at the end of the export. 
+:::
+
+```{r, results='hide'}
+mf_theme("candy", bg = "grey80")
+mf_export(com, "img/c2c2.png", width = 480)
+mf_map(com)
+mf_title("Le Lot")
+dev.off()
+```
+
+![](img/c2c2.png)
+
+In the following export we have added some space on the right side of the plot (50% of `x` width). 
+
+```{r, results="hide"}
+mf_export(
+  x = com, 
+  filename = "img/c2c2_expand.png",
+  width = 480, 
+  expandBB = c(0, 0, 0, .5), 
+  theme = "candy"
+)
+mf_map(com, add = TRUE)
+mf_title("Le Lot")
+dev.off()
+```
+![](img/c2c2_expand.png)
+
+
+
+`mf_export()` can produce SVG figures (with `export = "svg"`) and use other parameters of `png()` or `svg()` functions (e.g. `res`, `bg` or `family`).
+
+
+## Add an image on the map
+`readPNG()` from the `png` package can be used to add an image on a map.
+
+```{r logo}
+mf_theme("default", mar = c(0,0,0,0))
+library(png)
+# image import
+logo <- readPNG("img/Logo CG 46 - Bleu.png")
+# image dimension
+pp <- dim(logo)[2:1] * 20
+# Coordinates of the topleft corner of com bounding box
+xy <- st_bbox(com)[c(1,4)]
+mf_map(com, col = "#D1914D", border = "white")
+rasterImage(
+  image   = logo,
+  xleft   = xy[1],
+  ybottom = xy[2] - pp[2],
+  xright  = xy[1] + pp[1],
+  ytop    = xy[2]
+)
+```
+
+
+## Interactive placement of layout elements
+
+Some layout elements can be positioned interactively on the map (legends, north arrow, scale bar...).
+
+![](img/interactive.gif)
+
+
+
+## Add a shadow to a layer
+
+`mf_shadow()` plots the shadow of a polygon layer.
+
+```{r shadow}
+mf_shadow(com)
+mf_map(com, add=TRUE)
+```
+
+
+## Add an inset on the map
+
+`mf_inset*()` functions create map insets.  
+`mf_inset_on()` starts the inset and `mf_inset_off()` closes it. 
+
+
+If map layers have to be plotted after the inset (i.e after `mf_inset_off()`), please use `add = TRUE`.  
+It is not possible to plot an inset within an inset.  
+It is possible to plot anything (base plots) within the inset, not only map layers.  
+
+
+```{r inset, fig.width = 6.5, fig.height = 5}
+mf_init(x = com_sel, theme = "agolalight", expandBB = c(0,.1,0,.5))
+mf_map(com, add = TRUE)
+mf_map(com_sel, col = "tomato4", border = "tomato1", lwd = 2, add = TRUE)
+# Inset France
+mf_inset_on(x = dep, pos = "topright", cex = .3)
+mf_map(dep, lwd = .5, border= "grey90")
+mf_map(com_sel, col = "tomato4", border = "tomato1", lwd = .5, add = TRUE)
+mf_scale(size = 200, pos = "bottomleft", cex = .6, lwd = .5)
+mf_inset_off()
+# Inset Lot
+mf_inset_on(x = com, pos = "bottomright", cex = .3)
+mf_map(com, lwd = .5, border= "grey90")
+mf_map(com_sel, col = "tomato4", border = "tomato1", lwd = .5, add = TRUE)
+mf_scale(size = 20, pos = "bottomright", cex = .6, lwd = .5)
+mf_inset_off()
+# Inset World Monde
+mf_inset_on(x = "worldmap", pos = "topleft")
+mf_worldmap(com_sel, land_col = "#cccccc",border_col = NA, 
+            water_col =  "#e3e3e3", col = "tomato4")
+mf_inset_off()
+mf_title("Cahors in the World")
+mf_scale(1, pos = 'bottomleft')
+
+```
+
+:::{.callout-note}
+## World Map Inset
+It is easy to create an inset with a world map (see `mf_worldmap()`) using `x = "worldmap"`. 
+```{r, fig.height=6, fig.width=5, results = FALSE}
+mf_map(com)
+mf_inset_on(x = "worldmap")
+mf_worldmap(com)
+mf_inset_off()
+```
+:::

@@ -1,0 +1,801 @@
+<!DOCTYPE html>
+<html xmlns="http://www.w3.org/1999/xhtml" lang="en" xml:lang="en"><head>
+
+<meta charset="utf-8">
+<meta name="generator" content="quarto-1.2.269">
+
+<meta name="viewport" content="width=device-width, initial-scale=1.0, user-scalable=yes">
+
+<meta name="description" content="Create thematic maps with R.">
+
+<title>Mapping with R - 3&nbsp; Map layout</title>
+<style>
+code{white-space: pre-wrap;}
+span.smallcaps{font-variant: small-caps;}
+div.columns{display: flex; gap: min(4vw, 1.5em);}
+div.column{flex: auto; overflow-x: auto;}
+div.hanging-indent{margin-left: 1.5em; text-indent: -1.5em;}
+ul.task-list{list-style: none;}
+ul.task-list li input[type="checkbox"] {
+  width: 0.8em;
+  margin: 0 0.8em 0.2em -1.6em;
+  vertical-align: middle;
+}
+pre > code.sourceCode { white-space: pre; position: relative; }
+pre > code.sourceCode > span { display: inline-block; line-height: 1.25; }
+pre > code.sourceCode > span:empty { height: 1.2em; }
+.sourceCode { overflow: visible; }
+code.sourceCode > span { color: inherit; text-decoration: inherit; }
+div.sourceCode { margin: 1em 0; }
+pre.sourceCode { margin: 0; }
+@media screen {
+div.sourceCode { overflow: auto; }
+}
+@media print {
+pre > code.sourceCode { white-space: pre-wrap; }
+pre > code.sourceCode > span { text-indent: -5em; padding-left: 5em; }
+}
+pre.numberSource code
+  { counter-reset: source-line 0; }
+pre.numberSource code > span
+  { position: relative; left: -4em; counter-increment: source-line; }
+pre.numberSource code > span > a:first-child::before
+  { content: counter(source-line);
+    position: relative; left: -1em; text-align: right; vertical-align: baseline;
+    border: none; display: inline-block;
+    -webkit-touch-callout: none; -webkit-user-select: none;
+    -khtml-user-select: none; -moz-user-select: none;
+    -ms-user-select: none; user-select: none;
+    padding: 0 4px; width: 4em;
+    color: #aaaaaa;
+  }
+pre.numberSource { margin-left: 3em; border-left: 1px solid #aaaaaa;  padding-left: 4px; }
+div.sourceCode
+  {   }
+@media screen {
+pre > code.sourceCode > span > a:first-child::before { text-decoration: underline; }
+}
+code span.al { color: #ff0000; font-weight: bold; } /* Alert */
+code span.an { color: #60a0b0; font-weight: bold; font-style: italic; } /* Annotation */
+code span.at { color: #7d9029; } /* Attribute */
+code span.bn { color: #40a070; } /* BaseN */
+code span.bu { color: #008000; } /* BuiltIn */
+code span.cf { color: #007020; font-weight: bold; } /* ControlFlow */
+code span.ch { color: #4070a0; } /* Char */
+code span.cn { color: #880000; } /* Constant */
+code span.co { color: #60a0b0; font-style: italic; } /* Comment */
+code span.cv { color: #60a0b0; font-weight: bold; font-style: italic; } /* CommentVar */
+code span.do { color: #ba2121; font-style: italic; } /* Documentation */
+code span.dt { color: #902000; } /* DataType */
+code span.dv { color: #40a070; } /* DecVal */
+code span.er { color: #ff0000; font-weight: bold; } /* Error */
+code span.ex { } /* Extension */
+code span.fl { color: #40a070; } /* Float */
+code span.fu { color: #06287e; } /* Function */
+code span.im { color: #008000; font-weight: bold; } /* Import */
+code span.in { color: #60a0b0; font-weight: bold; font-style: italic; } /* Information */
+code span.kw { color: #007020; font-weight: bold; } /* Keyword */
+code span.op { color: #666666; } /* Operator */
+code span.ot { color: #007020; } /* Other */
+code span.pp { color: #bc7a00; } /* Preprocessor */
+code span.sc { color: #4070a0; } /* SpecialChar */
+code span.ss { color: #bb6688; } /* SpecialString */
+code span.st { color: #4070a0; } /* String */
+code span.va { color: #19177c; } /* Variable */
+code span.vs { color: #4070a0; } /* VerbatimString */
+code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warning */
+</style>
+
+
+<script src="site_libs/quarto-nav/quarto-nav.js"></script>
+<script src="site_libs/quarto-nav/headroom.min.js"></script>
+<link href="./04_references.html" rel="next">
+<link href="./02_map_type.html" rel="prev">
+<link href="./img/globe-africa-solid.svg" rel="icon" type="image/svg+xml">
+<script src="site_libs/clipboard/clipboard.min.js"></script>
+<script src="site_libs/quarto-html/quarto.js"></script>
+<script src="site_libs/quarto-html/popper.min.js"></script>
+<script src="site_libs/quarto-html/tippy.umd.min.js"></script>
+<script src="site_libs/quarto-html/anchor.min.js"></script>
+<link href="site_libs/quarto-html/tippy.css" rel="stylesheet">
+<link href="site_libs/quarto-html/quarto-syntax-highlighting.css" rel="stylesheet" id="quarto-text-highlighting-styles">
+<script src="site_libs/bootstrap/bootstrap.min.js"></script>
+<link href="site_libs/bootstrap/bootstrap-icons.css" rel="stylesheet">
+<link href="site_libs/bootstrap/bootstrap.min.css" rel="stylesheet" id="quarto-bootstrap" data-mode="light">
+<script id="quarto-search-options" type="application/json">{
+  "language": {
+    "search-no-results-text": "No results",
+    "search-matching-documents-text": "matching documents",
+    "search-copy-link-title": "Copy link to search",
+    "search-hide-matches-text": "Hide additional matches",
+    "search-more-match-text": "more match in this document",
+    "search-more-matches-text": "more matches in this document",
+    "search-clear-button-title": "Clear",
+    "search-detached-cancel-button-title": "Cancel",
+    "search-submit-button-title": "Submit"
+  }
+}</script>
+
+
+<meta property="og:title" content="Mapping with R - 3&nbsp; Map layout">
+<meta property="og:description" content="Create thematic maps with R.">
+<meta property="og:site-name" content="Mapping with R">
+<meta name="twitter:title" content="Mapping with R - 3&nbsp; Map layout">
+<meta name="twitter:description" content="Create thematic maps with R.">
+<meta name="twitter:image" content="img/globe-africa-solid.png">
+<meta name="twitter:creator" content="rgeomatic">
+<meta name="twitter:card" content="summary_large_image">
+</head>
+
+<body class="nav-sidebar floating">
+
+<div id="quarto-search-results"></div>
+  <header id="quarto-header" class="headroom fixed-top">
+  <nav class="quarto-secondary-nav" data-bs-toggle="collapse" data-bs-target="#quarto-sidebar" aria-controls="quarto-sidebar" aria-expanded="false" aria-label="Toggle sidebar navigation" onclick="if (window.quartoToggleHeadroom) { window.quartoToggleHeadroom(); }">
+    <div class="container-fluid d-flex justify-content-between">
+      <h1 class="quarto-secondary-nav-title"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Map layout</span></h1>
+      <button type="button" class="quarto-btn-toggle btn" aria-label="Show secondary navigation">
+        <i class="bi bi-chevron-right"></i>
+      </button>
+    </div>
+  </nav>
+</header>
+<!-- content -->
+<div id="quarto-content" class="quarto-container page-columns page-rows-contents page-layout-article">
+<!-- sidebar -->
+  <nav id="quarto-sidebar" class="sidebar collapse sidebar-navigation floating overflow-auto">
+    <div class="pt-lg-2 mt-2 text-left sidebar-header">
+    <div class="sidebar-title mb-0 py-0">
+      <a href="./">Mapping with R</a> 
+    </div>
+      </div>
+    <div class="sidebar-menu-container"> 
+    <ul class="list-unstyled mt-1">
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./index.html" class="sidebar-item-text sidebar-link"><em>Preambule</em></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./01_mapsf.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">1</span>&nbsp; <span class="chapter-title"><code>mapsf</code></span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./02_map_type.html" class="sidebar-item-text sidebar-link"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Map types</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./03_map_layout.html" class="sidebar-item-text sidebar-link active"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Map layout</span></a>
+  </div>
+</li>
+        <li class="sidebar-item">
+  <div class="sidebar-item-container"> 
+  <a href="./04_references.html" class="sidebar-item-text sidebar-link">References</a>
+  </div>
+</li>
+    </ul>
+    </div>
+</nav>
+<!-- margin-sidebar -->
+    <div id="quarto-margin-sidebar" class="sidebar margin-sidebar">
+        <nav id="TOC" role="doc-toc" class="toc-active">
+    <h2 id="toc-title">Table of contents</h2>
+   
+  <ul>
+  <li><a href="#themes" id="toc-themes" class="nav-link active" data-scroll-target="#themes"><span class="toc-section-number">3.1</span>  Themes</a>
+  <ul class="collapse">
+  <li><a href="#using-a-predefined-theme" id="toc-using-a-predefined-theme" class="nav-link" data-scroll-target="#using-a-predefined-theme"><span class="toc-section-number">3.1.1</span>  Using a predefined theme</a></li>
+  <li><a href="#how-to-modify-an-existing-theme" id="toc-how-to-modify-an-existing-theme" class="nav-link" data-scroll-target="#how-to-modify-an-existing-theme"><span class="toc-section-number">3.1.2</span>  How to modify an existing theme</a></li>
+  <li><a href="#how-to-create-a-new-theme" id="toc-how-to-create-a-new-theme" class="nav-link" data-scroll-target="#how-to-create-a-new-theme"><span class="toc-section-number">3.1.3</span>  How to create a new theme</a></li>
+  </ul></li>
+  <li><a href="#les-titres" id="toc-les-titres" class="nav-link" data-scroll-target="#les-titres"><span class="toc-section-number">3.2</span>  Les titres</a></li>
+  <li><a href="#north-arrow" id="toc-north-arrow" class="nav-link" data-scroll-target="#north-arrow"><span class="toc-section-number">3.3</span>  North arrow</a></li>
+  <li><a href="#scale-bar" id="toc-scale-bar" class="nav-link" data-scroll-target="#scale-bar"><span class="toc-section-number">3.4</span>  Scale bar</a></li>
+  <li><a href="#credits" id="toc-credits" class="nav-link" data-scroll-target="#credits"><span class="toc-section-number">3.5</span>  Credits</a></li>
+  <li><a href="#full-map-layout" id="toc-full-map-layout" class="nav-link" data-scroll-target="#full-map-layout"><span class="toc-section-number">3.6</span>  Full map layout</a></li>
+  <li><a href="#annotations" id="toc-annotations" class="nav-link" data-scroll-target="#annotations"><span class="toc-section-number">3.7</span>  Annotations</a></li>
+  <li><a href="#legends" id="toc-legends" class="nav-link" data-scroll-target="#legends"><span class="toc-section-number">3.8</span>  Legends</a></li>
+  <li><a href="#labels" id="toc-labels" class="nav-link" data-scroll-target="#labels"><span class="toc-section-number">3.9</span>  Labels</a></li>
+  <li><a href="#center-the-map-on-a-specific-area" id="toc-center-the-map-on-a-specific-area" class="nav-link" data-scroll-target="#center-the-map-on-a-specific-area"><span class="toc-section-number">3.10</span>  Center the map on a specific area</a></li>
+  <li><a href="#display-several-maps-on-the-same-figure" id="toc-display-several-maps-on-the-same-figure" class="nav-link" data-scroll-target="#display-several-maps-on-the-same-figure"><span class="toc-section-number">3.11</span>  Display several maps on the same figure</a></li>
+  <li><a href="#export-maps" id="toc-export-maps" class="nav-link" data-scroll-target="#export-maps"><span class="toc-section-number">3.12</span>  Export maps</a></li>
+  <li><a href="#add-an-image-on-the-map" id="toc-add-an-image-on-the-map" class="nav-link" data-scroll-target="#add-an-image-on-the-map"><span class="toc-section-number">3.13</span>  Add an image on the map</a></li>
+  <li><a href="#interactive-placement-of-layout-elements" id="toc-interactive-placement-of-layout-elements" class="nav-link" data-scroll-target="#interactive-placement-of-layout-elements"><span class="toc-section-number">3.14</span>  Interactive placement of layout elements</a></li>
+  <li><a href="#add-a-shadow-to-a-layer" id="toc-add-a-shadow-to-a-layer" class="nav-link" data-scroll-target="#add-a-shadow-to-a-layer"><span class="toc-section-number">3.15</span>  Add a shadow to a layer</a></li>
+  <li><a href="#add-an-inset-on-the-map" id="toc-add-an-inset-on-the-map" class="nav-link" data-scroll-target="#add-an-inset-on-the-map"><span class="toc-section-number">3.16</span>  Add an inset on the map</a></li>
+  </ul>
+</nav>
+    </div>
+<!-- main -->
+<main class="content" id="quarto-document-content">
+
+<header id="title-block-header" class="quarto-title-block default">
+<div class="quarto-title">
+<h1 class="title d-none d-lg-block"><span class="chapter-number">3</span>&nbsp; <span class="chapter-title">Map layout</span></h1>
+</div>
+
+
+
+<div class="quarto-title-meta">
+
+    
+  
+    
+  </div>
+  
+
+</header>
+
+<div class="cell">
+
+</div>
+<section id="themes" class="level2" data-number="3.1">
+<h2 data-number="3.1" class="anchored" data-anchor-id="themes"><span class="header-section-number">3.1</span> Themes</h2>
+<p><strong><code>mf_theme()</code></strong> sets a map theme. A theme is a set of graphical parameters that are applied to maps created with <code>mapsf</code>. These parameters are the figure margins, background and foreground colors and <code>mf_title()</code> options. <code>mapsf</code> offers some builtin themes. It’s possible to modify an existing theme or to start a theme from scratch. The map theme can also be set with <code>mf_init()</code> and <code>mf_export()</code>.</p>
+<section id="using-a-predefined-theme" class="level3" data-number="3.1.1">
+<h3 data-number="3.1.1" class="anchored" data-anchor-id="using-a-predefined-theme"><span class="header-section-number">3.1.1</span> Using a predefined theme</h3>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb1"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb1-1"><a href="#cb1-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapsf)</span>
+<span id="cb1-2"><a href="#cb1-2" aria-hidden="true" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">2</span>,<span class="dv">2</span>))</span>
+<span id="cb1-3"><a href="#cb1-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_theme</span>(<span class="st">"default"</span>)</span>
+<span id="cb1-4"><a href="#cb1-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb1-5"><a href="#cb1-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Theme : 'default'"</span>)</span>
+<span id="cb1-6"><a href="#cb1-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_theme</span>(<span class="st">"darkula"</span>)</span>
+<span id="cb1-7"><a href="#cb1-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb1-8"><a href="#cb1-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Theme : 'darkula'"</span>)</span>
+<span id="cb1-9"><a href="#cb1-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_theme</span>(<span class="st">"candy"</span>)</span>
+<span id="cb1-10"><a href="#cb1-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb1-11"><a href="#cb1-11" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Theme : 'candy'"</span>)</span>
+<span id="cb1-12"><a href="#cb1-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_theme</span>(<span class="st">"nevermind"</span>)</span>
+<span id="cb1-13"><a href="#cb1-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb1-14"><a href="#cb1-14" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Theme : 'nevermind'"</span>)</span>
+<span id="cb1-15"><a href="#cb1-15" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(opar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/them1-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section>
+<section id="how-to-modify-an-existing-theme" class="level3" data-number="3.1.2">
+<h3 data-number="3.1.2" class="anchored" data-anchor-id="how-to-modify-an-existing-theme"><span class="header-section-number">3.1.2</span> How to modify an existing theme</h3>
+<p>It is possible to modify an existing theme. In this example we use the “default” theme and modify some title parameters.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb2"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb2-1"><a href="#cb2-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapsf)</span>
+<span id="cb2-2"><a href="#cb2-2" aria-hidden="true" tabindex="-1"></a>opar <span class="ot">&lt;-</span> <span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">2</span>))</span>
+<span id="cb2-3"><a href="#cb2-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_theme</span>(<span class="st">"default"</span>)</span>
+<span id="cb2-4"><a href="#cb2-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb2-5"><a href="#cb2-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"default"</span>)</span>
+<span id="cb2-6"><a href="#cb2-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_theme</span>(</span>
+<span id="cb2-7"><a href="#cb2-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> <span class="st">"default"</span>, </span>
+<span id="cb2-8"><a href="#cb2-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">tab =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb2-9"><a href="#cb2-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">font =</span> <span class="dv">4</span>, </span>
+<span id="cb2-10"><a href="#cb2-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">bg =</span> <span class="st">"grey60"</span>, </span>
+<span id="cb2-11"><a href="#cb2-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">pos =</span> <span class="st">"center"</span></span>
+<span id="cb2-12"><a href="#cb2-12" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb2-13"><a href="#cb2-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb2-14"><a href="#cb2-14" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"modified default"</span>)</span>
+<span id="cb2-15"><a href="#cb2-15" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(opar)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/theme2-1.png" class="img-fluid" width="768"></p>
+</div>
+</div>
+</section>
+<section id="how-to-create-a-new-theme" class="level3" data-number="3.1.3">
+<h3 data-number="3.1.3" class="anchored" data-anchor-id="how-to-create-a-new-theme"><span class="header-section-number">3.1.3</span> How to create a new theme</h3>
+<p>It is possible to create a new theme.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb3"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb3-1"><a href="#cb3-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_theme</span>(</span>
+<span id="cb3-2"><a href="#cb3-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">bg =</span> <span class="st">"lightblue"</span>,   </span>
+<span id="cb3-3"><a href="#cb3-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">fg =</span> <span class="st">"tomato1"</span>,      </span>
+<span id="cb3-4"><a href="#cb3-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="fl">1.5</span>,<span class="dv">0</span>),</span>
+<span id="cb3-5"><a href="#cb3-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">tab =</span> <span class="cn">FALSE</span>,        </span>
+<span id="cb3-6"><a href="#cb3-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">inner =</span> <span class="cn">FALSE</span>,       </span>
+<span id="cb3-7"><a href="#cb3-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">line =</span> <span class="fl">1.5</span>,          </span>
+<span id="cb3-8"><a href="#cb3-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">pos =</span> <span class="st">"center"</span>,      </span>
+<span id="cb3-9"><a href="#cb3-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="fl">1.2</span>,           </span>
+<span id="cb3-10"><a href="#cb3-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">font =</span> <span class="dv">2</span>  </span>
+<span id="cb3-11"><a href="#cb3-11" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb3-12"><a href="#cb3-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb3-13"><a href="#cb3-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"New theme"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/unnamed-chunk-2-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+</section>
+</section>
+<section id="les-titres" class="level2" data-number="3.2">
+<h2 data-number="3.2" class="anchored" data-anchor-id="les-titres"><span class="header-section-number">3.2</span> Les titres</h2>
+<p><code>mf_title()</code> plots a tile on the map.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb4"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb4-1"><a href="#cb4-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_theme</span>(<span class="st">"default"</span>)</span>
+<span id="cb4-2"><a href="#cb4-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb4-3"><a href="#cb4-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Map title"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+<p>The title parameters can be modified.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb5"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb5-1"><a href="#cb5-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb5-2"><a href="#cb5-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(</span>
+<span id="cb5-3"><a href="#cb5-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">txt =</span> <span class="st">"Map title"</span>, </span>
+<span id="cb5-4"><a href="#cb5-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">pos =</span> <span class="st">"center"</span>, </span>
+<span id="cb5-5"><a href="#cb5-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">tab =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb5-6"><a href="#cb5-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">bg =</span> <span class="st">"tomato3"</span>, </span>
+<span id="cb5-7"><a href="#cb5-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">fg =</span> <span class="st">"lightblue"</span>, </span>
+<span id="cb5-8"><a href="#cb5-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="dv">1</span>, </span>
+<span id="cb5-9"><a href="#cb5-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">line =</span> <span class="fl">1.2</span>, </span>
+<span id="cb5-10"><a href="#cb5-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">font =</span> <span class="dv">1</span>, </span>
+<span id="cb5-11"><a href="#cb5-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">inner =</span> <span class="cn">FALSE</span></span>
+<span id="cb5-12"><a href="#cb5-12" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+</section>
+<section id="north-arrow" class="level2" data-number="3.3">
+<h2 data-number="3.3" class="anchored" data-anchor-id="north-arrow"><span class="header-section-number">3.3</span> North arrow</h2>
+<p><code>mf_arrow()</code> plots a north arrow on the map.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb6"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb6-1"><a href="#cb6-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb6-2"><a href="#cb6-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_arrow</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/north-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+</section>
+<section id="scale-bar" class="level2" data-number="3.4">
+<h2 data-number="3.4" class="anchored" data-anchor-id="scale-bar"><span class="header-section-number">3.4</span> Scale bar</h2>
+<p><code>mf_scale()</code> plots a scale bar on the map.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb7"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb7-1"><a href="#cb7-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb7-2"><a href="#cb7-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_scale</span>(</span>
+<span id="cb7-3"><a href="#cb7-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">size =</span> <span class="dv">20</span>,</span>
+<span id="cb7-4"><a href="#cb7-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">lwd =</span> <span class="dv">2</span>,</span>
+<span id="cb7-5"><a href="#cb7-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="fl">1.2</span>,</span>
+<span id="cb7-6"><a href="#cb7-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/scale-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+</section>
+<section id="credits" class="level2" data-number="3.5">
+<h2 data-number="3.5" class="anchored" data-anchor-id="credits"><span class="header-section-number">3.5</span> Credits</h2>
+<p><code>mf_credits()</code> plots credits at the bottom of the map.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb8"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb8-1"><a href="#cb8-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb8-2"><a href="#cb8-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_credits</span>(<span class="st">"Source: ..... </span><span class="sc">\n</span><span class="st">Authors: ............"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/credit-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+</section>
+<section id="full-map-layout" class="level2" data-number="3.6">
+<h2 data-number="3.6" class="anchored" data-anchor-id="full-map-layout"><span class="header-section-number">3.6</span> Full map layout</h2>
+<p><code>mf_layout()</code> add a complete layout to the map (title, credits, north arrow, scale bar). Each layout elements can also be set separately (with <code>mf_title()</code>, <code>mf_credits()</code>, <code>mf_arrow()</code> and <code>mf_scale()</code>).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb9"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb9-1"><a href="#cb9-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb9-2"><a href="#cb9-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_layout</span>(</span>
+<span id="cb9-3"><a href="#cb9-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Le Lot"</span>,</span>
+<span id="cb9-4"><a href="#cb9-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">credits =</span> <span class="st">"Author: .......</span><span class="sc">\n</span><span class="st">Sources: ................"</span>,</span>
+<span id="cb9-5"><a href="#cb9-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">arrow =</span> <span class="cn">TRUE</span></span>
+<span id="cb9-6"><a href="#cb9-6" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/layout1-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+</section>
+<section id="annotations" class="level2" data-number="3.7">
+<h2 data-number="3.7" class="anchored" data-anchor-id="annotations"><span class="header-section-number">3.7</span> Annotations</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb10"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb10-1"><a href="#cb10-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select a municipality</span></span>
+<span id="cb10-2"><a href="#cb10-2" aria-hidden="true" tabindex="-1"></a>cahors <span class="ot">&lt;-</span> com[com<span class="sc">$</span>NOM_COM <span class="sc">==</span> <span class="st">"Cahors"</span>, ]</span>
+<span id="cb10-3"><a href="#cb10-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb10-4"><a href="#cb10-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_annotation</span>(</span>
+<span id="cb10-5"><a href="#cb10-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> cahors, </span>
+<span id="cb10-6"><a href="#cb10-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">txt =</span> <span class="st">"Cahors"</span>, </span>
+<span id="cb10-7"><a href="#cb10-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">halo =</span> <span class="cn">TRUE</span>, </span>
+<span id="cb10-8"><a href="#cb10-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">cex =</span> <span class="fl">1.5</span></span>
+<span id="cb10-9"><a href="#cb10-9" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+</section>
+<section id="legends" class="level2" data-number="3.8">
+<h2 data-number="3.8" class="anchored" data-anchor-id="legends"><span class="header-section-number">3.8</span> Legends</h2>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb11"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb11-1"><a href="#cb11-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb11-2"><a href="#cb11-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_legend</span>(</span>
+<span id="cb11-3"><a href="#cb11-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"prop"</span>, </span>
+<span id="cb11-4"><a href="#cb11-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">val =</span> <span class="fu">c</span>(<span class="dv">1000</span>,<span class="dv">500</span>,<span class="dv">200</span>,<span class="dv">10</span>), </span>
+<span id="cb11-5"><a href="#cb11-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">inches =</span> .<span class="dv">4</span>, </span>
+<span id="cb11-6"><a href="#cb11-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">title =</span> <span class="st">"Population"</span>, </span>
+<span id="cb11-7"><a href="#cb11-7" aria-hidden="true" tabindex="-1"></a>  <span class="at">pos =</span> <span class="st">"topleft"</span></span>
+<span id="cb11-8"><a href="#cb11-8" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb11-9"><a href="#cb11-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_legend</span>(</span>
+<span id="cb11-10"><a href="#cb11-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">type =</span> <span class="st">"choro"</span>, </span>
+<span id="cb11-11"><a href="#cb11-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">val =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">10</span>,<span class="dv">20</span>,<span class="dv">30</span>,<span class="dv">40</span>),</span>
+<span id="cb11-12"><a href="#cb11-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">pal =</span> <span class="st">"Greens"</span>, </span>
+<span id="cb11-13"><a href="#cb11-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">pos =</span> <span class="st">"bottomright"</span>, </span>
+<span id="cb11-14"><a href="#cb11-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">val_rnd =</span> <span class="dv">0</span></span>
+<span id="cb11-15"><a href="#cb11-15" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+</section>
+<section id="labels" class="level2" data-number="3.9">
+<h2 data-number="3.9" class="anchored" data-anchor-id="labels"><span class="header-section-number">3.9</span> Labels</h2>
+<p><code>mf_label()</code> displays labels on the map.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb12"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb12-1"><a href="#cb12-1" aria-hidden="true" tabindex="-1"></a><span class="co"># select a set of municipalities</span></span>
+<span id="cb12-2"><a href="#cb12-2" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-3"><a href="#cb12-3" aria-hidden="true" tabindex="-1"></a>com_sel <span class="ot">&lt;-</span> </span>
+<span id="cb12-4"><a href="#cb12-4" aria-hidden="true" tabindex="-1"></a>  com[<span class="fu">st_intersects</span>(com, com[com<span class="sc">$</span>NOM_COM <span class="sc">==</span> <span class="st">"Cahors"</span>, ], <span class="at">sparse =</span> F), ]</span>
+<span id="cb12-5"><a href="#cb12-5" aria-hidden="true" tabindex="-1"></a></span>
+<span id="cb12-6"><a href="#cb12-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com_sel)</span>
+<span id="cb12-7"><a href="#cb12-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_label</span>(</span>
+<span id="cb12-8"><a href="#cb12-8" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> com_sel,</span>
+<span id="cb12-9"><a href="#cb12-9" aria-hidden="true" tabindex="-1"></a>  <span class="at">var =</span> <span class="st">"NOM_COM"</span>,</span>
+<span id="cb12-10"><a href="#cb12-10" aria-hidden="true" tabindex="-1"></a>  <span class="at">col=</span> <span class="st">"black"</span>,</span>
+<span id="cb12-11"><a href="#cb12-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">halo =</span> <span class="cn">TRUE</span>,</span>
+<span id="cb12-12"><a href="#cb12-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">overlap =</span> <span class="cn">FALSE</span>, </span>
+<span id="cb12-13"><a href="#cb12-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">lines =</span> <span class="cn">FALSE</span></span>
+<span id="cb12-14"><a href="#cb12-14" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb12-15"><a href="#cb12-15" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_scale</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/labs-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+<p>If <code>halo = TRUE</code> then a halo is printed around the text.<br>
+If <code>overlap = FALSE</code> then labels are moved so they do not overlap.</p>
+</section>
+<section id="center-the-map-on-a-specific-area" class="level2" data-number="3.10">
+<h2 data-number="3.10" class="anchored" data-anchor-id="center-the-map-on-a-specific-area"><span class="header-section-number">3.10</span> Center the map on a specific area</h2>
+<p><code>mf_init()</code> is designed to initiate a map centered on a specific extent (<code>x</code> bbox). The <code>theme</code> argument allows to select a theme.</p>
+<div class="callout-note callout callout-style-simple no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Always use <code>add = TRUE</code> after <code>mf_init()</code>.</p>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_init</span>(<span class="at">x =</span> com_sel, <span class="at">theme =</span> <span class="st">"iceberg"</span>)</span>
+<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb13-3"><a href="#cb13-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com_sel, <span class="at">col =</span> <span class="cn">NA</span>, <span class="at">border =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+</section>
+<section id="display-several-maps-on-the-same-figure" class="level2" data-number="3.11">
+<h2 data-number="3.11" class="anchored" data-anchor-id="display-several-maps-on-the-same-figure"><span class="header-section-number">3.11</span> Display several maps on the same figure</h2>
+<p>To plot several maps on the same figure, the user can use the <code>mfrow</code> argument of the <code>par()</code> function before plotting the maps. For example, use <code>par(mfrow = c(1, 2))</code> (i.e.&nbsp;1 row, 2 columns) to plot two maps side by side).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb14"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb14-1"><a href="#cb14-1" aria-hidden="true" tabindex="-1"></a><span class="co"># define the figure layout (1 row, 2 columns)</span></span>
+<span id="cb14-2"><a href="#cb14-2" aria-hidden="true" tabindex="-1"></a><span class="fu">par</span>(<span class="at">mfrow =</span> <span class="fu">c</span>(<span class="dv">1</span>, <span class="dv">2</span>))</span>
+<span id="cb14-3"><a href="#cb14-3" aria-hidden="true" tabindex="-1"></a><span class="co"># define theme</span></span>
+<span id="cb14-4"><a href="#cb14-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_theme</span>(<span class="st">"default"</span>, <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="fl">1.2</span>,<span class="dv">0</span>), <span class="at">tab =</span> <span class="cn">FALSE</span>, <span class="at">pos =</span> <span class="st">"center"</span>)</span>
+<span id="cb14-5"><a href="#cb14-5" aria-hidden="true" tabindex="-1"></a><span class="co"># first map</span></span>
+<span id="cb14-6"><a href="#cb14-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb14-7"><a href="#cb14-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com, <span class="st">"TER_F"</span>, <span class="st">"prop"</span>, </span>
+<span id="cb14-8"><a href="#cb14-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">val_max =</span> <span class="dv">4000</span>, </span>
+<span id="cb14-9"><a href="#cb14-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">leg_pos =</span> <span class="st">"topleft"</span>, </span>
+<span id="cb14-10"><a href="#cb14-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">leg_title =</span> <span class="st">"n."</span>)</span>
+<span id="cb14-11"><a href="#cb14-11" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Tertiary: Women"</span>)</span>
+<span id="cb14-12"><a href="#cb14-12" aria-hidden="true" tabindex="-1"></a><span class="co"># second map</span></span>
+<span id="cb14-13"><a href="#cb14-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb14-14"><a href="#cb14-14" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com, <span class="st">"TER_H"</span>, <span class="st">"prop"</span>, </span>
+<span id="cb14-15"><a href="#cb14-15" aria-hidden="true" tabindex="-1"></a>       <span class="at">val_max =</span> <span class="dv">4000</span>, </span>
+<span id="cb14-16"><a href="#cb14-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">leg_pos =</span> <span class="cn">NA</span>)</span>
+<span id="cb14-17"><a href="#cb14-17" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Men"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/mfrow0-1.png" class="img-fluid" width="672"></p>
+</div>
+</div>
+</section>
+<section id="export-maps" class="level2" data-number="3.12">
+<h2 data-number="3.12" class="anchored" data-anchor-id="export-maps"><span class="header-section-number">3.12</span> Export maps</h2>
+<p><code>mf_export()</code> exports maps in PNG or SVG formats.<br>
+The exported map width/height ratio will match the one of a spatial object.<br>
+If <code>width</code> is specified, then <code>height</code> is deduced from the width/height ratio of <code>x</code>, figure margins and title size.<br>
+If <code>height</code> is specified, then <code>width</code> is deduced from the width/height ratio of <code>x</code>, figure margins and title size.</p>
+<p>Additionally, <code>mf_export()</code> can be used to set a theme, to extend the map space on one or several side of the figure, or to center a map on a specific area.</p>
+<div class="callout-note callout callout-style-simple no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<p>Always use <code>add = TRUE</code> after <code>mf_export()</code> and do not forget to add <code>dev.off()</code> at the end of the export.</p>
+</div>
+</div>
+</div>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_theme</span>(<span class="st">"candy"</span>, <span class="at">bg =</span> <span class="st">"grey80"</span>)</span>
+<span id="cb15-2"><a href="#cb15-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_export</span>(com, <span class="st">"img/c2c2.png"</span>, <span class="at">width =</span> <span class="dv">480</span>)</span>
+<span id="cb15-3"><a href="#cb15-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb15-4"><a href="#cb15-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Le Lot"</span>)</span>
+<span id="cb15-5"><a href="#cb15-5" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><img src="img/c2c2.png" class="img-fluid"></p>
+<p>In the following export we have added some space on the right side of the plot (50% of <code>x</code> width).</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb16"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb16-1"><a href="#cb16-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_export</span>(</span>
+<span id="cb16-2"><a href="#cb16-2" aria-hidden="true" tabindex="-1"></a>  <span class="at">x =</span> com, </span>
+<span id="cb16-3"><a href="#cb16-3" aria-hidden="true" tabindex="-1"></a>  <span class="at">filename =</span> <span class="st">"img/c2c2_expand.png"</span>,</span>
+<span id="cb16-4"><a href="#cb16-4" aria-hidden="true" tabindex="-1"></a>  <span class="at">width =</span> <span class="dv">480</span>, </span>
+<span id="cb16-5"><a href="#cb16-5" aria-hidden="true" tabindex="-1"></a>  <span class="at">expandBB =</span> <span class="fu">c</span>(<span class="dv">0</span>, <span class="dv">0</span>, <span class="dv">0</span>, .<span class="dv">5</span>), </span>
+<span id="cb16-6"><a href="#cb16-6" aria-hidden="true" tabindex="-1"></a>  <span class="at">theme =</span> <span class="st">"candy"</span></span>
+<span id="cb16-7"><a href="#cb16-7" aria-hidden="true" tabindex="-1"></a>)</span>
+<span id="cb16-8"><a href="#cb16-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb16-9"><a href="#cb16-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Le Lot"</span>)</span>
+<span id="cb16-10"><a href="#cb16-10" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div>
+<p><img src="img/c2c2_expand.png" class="img-fluid"></p>
+<p><code>mf_export()</code> can produce SVG figures (with <code>export = "svg"</code>) and use other parameters of <code>png()</code> or <code>svg()</code> functions (e.g.&nbsp;<code>res</code>, <code>bg</code> or <code>family</code>).</p>
+</section>
+<section id="add-an-image-on-the-map" class="level2" data-number="3.13">
+<h2 data-number="3.13" class="anchored" data-anchor-id="add-an-image-on-the-map"><span class="header-section-number">3.13</span> Add an image on the map</h2>
+<p><code>readPNG()</code> from the <code>png</code> package can be used to add an image on a map.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_theme</span>(<span class="st">"default"</span>, <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>))</span>
+<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(png)</span>
+<span id="cb17-3"><a href="#cb17-3" aria-hidden="true" tabindex="-1"></a><span class="co"># image import</span></span>
+<span id="cb17-4"><a href="#cb17-4" aria-hidden="true" tabindex="-1"></a>logo <span class="ot">&lt;-</span> <span class="fu">readPNG</span>(<span class="st">"img/Logo CG 46 - Bleu.png"</span>)</span>
+<span id="cb17-5"><a href="#cb17-5" aria-hidden="true" tabindex="-1"></a><span class="co"># image dimension</span></span>
+<span id="cb17-6"><a href="#cb17-6" aria-hidden="true" tabindex="-1"></a>pp <span class="ot">&lt;-</span> <span class="fu">dim</span>(logo)[<span class="dv">2</span><span class="sc">:</span><span class="dv">1</span>] <span class="sc">*</span> <span class="dv">20</span></span>
+<span id="cb17-7"><a href="#cb17-7" aria-hidden="true" tabindex="-1"></a><span class="co"># Coordinates of the topleft corner of com bounding box</span></span>
+<span id="cb17-8"><a href="#cb17-8" aria-hidden="true" tabindex="-1"></a>xy <span class="ot">&lt;-</span> <span class="fu">st_bbox</span>(com)[<span class="fu">c</span>(<span class="dv">1</span>,<span class="dv">4</span>)]</span>
+<span id="cb17-9"><a href="#cb17-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com, <span class="at">col =</span> <span class="st">"#D1914D"</span>, <span class="at">border =</span> <span class="st">"white"</span>)</span>
+<span id="cb17-10"><a href="#cb17-10" aria-hidden="true" tabindex="-1"></a><span class="fu">rasterImage</span>(</span>
+<span id="cb17-11"><a href="#cb17-11" aria-hidden="true" tabindex="-1"></a>  <span class="at">image   =</span> logo,</span>
+<span id="cb17-12"><a href="#cb17-12" aria-hidden="true" tabindex="-1"></a>  <span class="at">xleft   =</span> xy[<span class="dv">1</span>],</span>
+<span id="cb17-13"><a href="#cb17-13" aria-hidden="true" tabindex="-1"></a>  <span class="at">ybottom =</span> xy[<span class="dv">2</span>] <span class="sc">-</span> pp[<span class="dv">2</span>],</span>
+<span id="cb17-14"><a href="#cb17-14" aria-hidden="true" tabindex="-1"></a>  <span class="at">xright  =</span> xy[<span class="dv">1</span>] <span class="sc">+</span> pp[<span class="dv">1</span>],</span>
+<span id="cb17-15"><a href="#cb17-15" aria-hidden="true" tabindex="-1"></a>  <span class="at">ytop    =</span> xy[<span class="dv">2</span>]</span>
+<span id="cb17-16"><a href="#cb17-16" aria-hidden="true" tabindex="-1"></a>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/logo-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+</section>
+<section id="interactive-placement-of-layout-elements" class="level2" data-number="3.14">
+<h2 data-number="3.14" class="anchored" data-anchor-id="interactive-placement-of-layout-elements"><span class="header-section-number">3.14</span> Interactive placement of layout elements</h2>
+<p>Some layout elements can be positioned interactively on the map (legends, north arrow, scale bar…).</p>
+<p><img src="img/interactive.gif" class="img-fluid"></p>
+</section>
+<section id="add-a-shadow-to-a-layer" class="level2" data-number="3.15">
+<h2 data-number="3.15" class="anchored" data-anchor-id="add-a-shadow-to-a-layer"><span class="header-section-number">3.15</span> Add a shadow to a layer</h2>
+<p><code>mf_shadow()</code> plots the shadow of a polygon layer.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_shadow</span>(com)</span>
+<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com, <span class="at">add=</span><span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/shadow-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+</section>
+<section id="add-an-inset-on-the-map" class="level2" data-number="3.16">
+<h2 data-number="3.16" class="anchored" data-anchor-id="add-an-inset-on-the-map"><span class="header-section-number">3.16</span> Add an inset on the map</h2>
+<p><code>mf_inset*()</code> functions create map insets.<br>
+<code>mf_inset_on()</code> starts the inset and <code>mf_inset_off()</code> closes it.</p>
+<p>If map layers have to be plotted after the inset (i.e after <code>mf_inset_off()</code>), please use <code>add = TRUE</code>.<br>
+It is not possible to plot an inset within an inset.<br>
+It is possible to plot anything (base plots) within the inset, not only map layers.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_init</span>(<span class="at">x =</span> com_sel, <span class="at">theme =</span> <span class="st">"agolalight"</span>, <span class="at">expandBB =</span> <span class="fu">c</span>(<span class="dv">0</span>,.<span class="dv">1</span>,<span class="dv">0</span>,.<span class="dv">5</span>))</span>
+<span id="cb19-2"><a href="#cb19-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-3"><a href="#cb19-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com_sel, <span class="at">col =</span> <span class="st">"tomato4"</span>, <span class="at">border =</span> <span class="st">"tomato1"</span>, <span class="at">lwd =</span> <span class="dv">2</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-4"><a href="#cb19-4" aria-hidden="true" tabindex="-1"></a><span class="co"># Inset France</span></span>
+<span id="cb19-5"><a href="#cb19-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_on</span>(<span class="at">x =</span> dep, <span class="at">pos =</span> <span class="st">"topright"</span>, <span class="at">cex =</span> .<span class="dv">3</span>)</span>
+<span id="cb19-6"><a href="#cb19-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(dep, <span class="at">lwd =</span> .<span class="dv">5</span>, <span class="at">border=</span> <span class="st">"grey90"</span>)</span>
+<span id="cb19-7"><a href="#cb19-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com_sel, <span class="at">col =</span> <span class="st">"tomato4"</span>, <span class="at">border =</span> <span class="st">"tomato1"</span>, <span class="at">lwd =</span> .<span class="dv">5</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-8"><a href="#cb19-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_scale</span>(<span class="at">size =</span> <span class="dv">200</span>, <span class="at">pos =</span> <span class="st">"bottomleft"</span>, <span class="at">cex =</span> .<span class="dv">6</span>, <span class="at">lwd =</span> .<span class="dv">5</span>)</span>
+<span id="cb19-9"><a href="#cb19-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_off</span>()</span>
+<span id="cb19-10"><a href="#cb19-10" aria-hidden="true" tabindex="-1"></a><span class="co"># Inset Lot</span></span>
+<span id="cb19-11"><a href="#cb19-11" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_on</span>(<span class="at">x =</span> com, <span class="at">pos =</span> <span class="st">"bottomright"</span>, <span class="at">cex =</span> .<span class="dv">3</span>)</span>
+<span id="cb19-12"><a href="#cb19-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com, <span class="at">lwd =</span> .<span class="dv">5</span>, <span class="at">border=</span> <span class="st">"grey90"</span>)</span>
+<span id="cb19-13"><a href="#cb19-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com_sel, <span class="at">col =</span> <span class="st">"tomato4"</span>, <span class="at">border =</span> <span class="st">"tomato1"</span>, <span class="at">lwd =</span> .<span class="dv">5</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
+<span id="cb19-14"><a href="#cb19-14" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_scale</span>(<span class="at">size =</span> <span class="dv">20</span>, <span class="at">pos =</span> <span class="st">"bottomright"</span>, <span class="at">cex =</span> .<span class="dv">6</span>, <span class="at">lwd =</span> .<span class="dv">5</span>)</span>
+<span id="cb19-15"><a href="#cb19-15" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_off</span>()</span>
+<span id="cb19-16"><a href="#cb19-16" aria-hidden="true" tabindex="-1"></a><span class="co"># Inset World Monde</span></span>
+<span id="cb19-17"><a href="#cb19-17" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_on</span>(<span class="at">x =</span> <span class="st">"worldmap"</span>, <span class="at">pos =</span> <span class="st">"topleft"</span>)</span>
+<span id="cb19-18"><a href="#cb19-18" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_worldmap</span>(com_sel, <span class="at">land_col =</span> <span class="st">"#cccccc"</span>,<span class="at">border_col =</span> <span class="cn">NA</span>, </span>
+<span id="cb19-19"><a href="#cb19-19" aria-hidden="true" tabindex="-1"></a>            <span class="at">water_col =</span>  <span class="st">"#e3e3e3"</span>, <span class="at">col =</span> <span class="st">"tomato4"</span>)</span>
+<span id="cb19-20"><a href="#cb19-20" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_off</span>()</span>
+<span id="cb19-21"><a href="#cb19-21" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Cahors in the World"</span>)</span>
+<span id="cb19-22"><a href="#cb19-22" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_scale</span>(<span class="dv">1</span>, <span class="at">pos =</span> <span class="st">'bottomleft'</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/inset-1.png" class="img-fluid" width="624"></p>
+</div>
+</div>
+<div class="callout-note callout callout-style-simple no-icon callout-captioned">
+<div class="callout-header d-flex align-content-center">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-caption-container flex-fill">
+World Map Inset
+</div>
+</div>
+<div class="callout-body-container callout-body">
+<p>It is easy to create an inset with a world map (see <code>mf_worldmap()</code>) using <code>x = "worldmap"</code>.</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(com)</span>
+<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_on</span>(<span class="at">x =</span> <span class="st">"worldmap"</span>)</span>
+<span id="cb20-3"><a href="#cb20-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_worldmap</span>(com)</span>
+<span id="cb20-4"><a href="#cb20-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="cell-output-display">
+<p><img src="03_map_layout_files/figure-html/unnamed-chunk-10-1.png" class="img-fluid" width="480"></p>
+</div>
+</div>
+</div>
+</div>
+
+
+</section>
+
+</main> <!-- /main -->
+<script id="quarto-html-after-body" type="application/javascript">
+window.document.addEventListener("DOMContentLoaded", function (event) {
+  const toggleBodyColorMode = (bsSheetEl) => {
+    const mode = bsSheetEl.getAttribute("data-mode");
+    const bodyEl = window.document.querySelector("body");
+    if (mode === "dark") {
+      bodyEl.classList.add("quarto-dark");
+      bodyEl.classList.remove("quarto-light");
+    } else {
+      bodyEl.classList.add("quarto-light");
+      bodyEl.classList.remove("quarto-dark");
+    }
+  }
+  const toggleBodyColorPrimary = () => {
+    const bsSheetEl = window.document.querySelector("link#quarto-bootstrap");
+    if (bsSheetEl) {
+      toggleBodyColorMode(bsSheetEl);
+    }
+  }
+  toggleBodyColorPrimary();  
+  const icon = "";
+  const anchorJS = new window.AnchorJS();
+  anchorJS.options = {
+    placement: 'right',
+    icon: icon
+  };
+  anchorJS.add('.anchored');
+  const clipboard = new window.ClipboardJS('.code-copy-button', {
+    target: function(trigger) {
+      return trigger.previousElementSibling;
+    }
+  });
+  clipboard.on('success', function(e) {
+    // button target
+    const button = e.trigger;
+    // don't keep focus
+    button.blur();
+    // flash "checked"
+    button.classList.add('code-copy-button-checked');
+    var currentTitle = button.getAttribute("title");
+    button.setAttribute("title", "Copied!");
+    let tooltip;
+    if (window.bootstrap) {
+      button.setAttribute("data-bs-toggle", "tooltip");
+      button.setAttribute("data-bs-placement", "left");
+      button.setAttribute("data-bs-title", "Copied!");
+      tooltip = new bootstrap.Tooltip(button, 
+        { trigger: "manual", 
+          customClass: "code-copy-button-tooltip",
+          offset: [0, -8]});
+      tooltip.show();    
+    }
+    setTimeout(function() {
+      if (tooltip) {
+        tooltip.hide();
+        button.removeAttribute("data-bs-title");
+        button.removeAttribute("data-bs-toggle");
+        button.removeAttribute("data-bs-placement");
+      }
+      button.setAttribute("title", currentTitle);
+      button.classList.remove('code-copy-button-checked');
+    }, 1000);
+    // clear code selection
+    e.clearSelection();
+  });
+  function tippyHover(el, contentFn) {
+    const config = {
+      allowHTML: true,
+      content: contentFn,
+      maxWidth: 500,
+      delay: 100,
+      arrow: false,
+      appendTo: function(el) {
+          return el.parentElement;
+      },
+      interactive: true,
+      interactiveBorder: 10,
+      theme: 'quarto',
+      placement: 'bottom-start'
+    };
+    window.tippy(el, config); 
+  }
+  const noterefs = window.document.querySelectorAll('a[role="doc-noteref"]');
+  for (var i=0; i<noterefs.length; i++) {
+    const ref = noterefs[i];
+    tippyHover(ref, function() {
+      // use id or data attribute instead here
+      let href = ref.getAttribute('data-footnote-href') || ref.getAttribute('href');
+      try { href = new URL(href).hash; } catch {}
+      const id = href.replace(/^#\/?/, "");
+      const note = window.document.getElementById(id);
+      return note.innerHTML;
+    });
+  }
+  const findCites = (el) => {
+    const parentEl = el.parentElement;
+    if (parentEl) {
+      const cites = parentEl.dataset.cites;
+      if (cites) {
+        return {
+          el,
+          cites: cites.split(' ')
+        };
+      } else {
+        return findCites(el.parentElement)
+      }
+    } else {
+      return undefined;
+    }
+  };
+  var bibliorefs = window.document.querySelectorAll('a[role="doc-biblioref"]');
+  for (var i=0; i<bibliorefs.length; i++) {
+    const ref = bibliorefs[i];
+    const citeInfo = findCites(ref);
+    if (citeInfo) {
+      tippyHover(citeInfo.el, function() {
+        var popup = window.document.createElement('div');
+        citeInfo.cites.forEach(function(cite) {
+          var citeDiv = window.document.createElement('div');
+          citeDiv.classList.add('hanging-indent');
+          citeDiv.classList.add('csl-entry');
+          var biblioDiv = window.document.getElementById('ref-' + cite);
+          if (biblioDiv) {
+            citeDiv.innerHTML = biblioDiv.innerHTML;
+          }
+          popup.appendChild(citeDiv);
+        });
+        return popup.innerHTML;
+      });
+    }
+  }
+});
+</script>
+<nav class="page-navigation">
+  <div class="nav-page nav-page-previous">
+      <a href="./02_map_type.html" class="pagination-link">
+        <i class="bi bi-arrow-left-short"></i> <span class="nav-page-text"><span class="chapter-number">2</span>&nbsp; <span class="chapter-title">Map types</span></span>
+      </a>          
+  </div>
+  <div class="nav-page nav-page-next">
+      <a href="./04_references.html" class="pagination-link">
+        <span class="nav-page-text">References</span> <i class="bi bi-arrow-right-short"></i>
+      </a>
+  </div>
+</nav>
+</div> <!-- /content -->
+<footer class="footer">
+  <div class="nav-footer">
+    <div class="nav-footer-left"><a href="https://creativecommons.org/licenses/by-nc-sa/4.0/"><img src="img/by-nc-sa.png" class="img-fluid" alt="CreativeCommonsLicense"></a></div>   
+  </div>
+</footer>
+
+
+
+</body></html>

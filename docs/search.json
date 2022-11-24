@@ -1,0 +1,198 @@
+[
+  {
+    "objectID": "index.html",
+    "href": "index.html",
+    "title": "Mapping with R",
+    "section": "",
+    "text": "Preambule\nCreate and integrate thematic maps in your R workflow.\nThe purpose of this document is to provide support for learning how to create maps with R.\nHow to use this document\nData used in this document are stored in an RStudio project. Once the file is unzipped, it is possible to test all the demontrations from within the geodata project.\nDownload the project\nContribution and feedback\nYou can send us your comments and suggestions by posting an issue on the GitHub repository of this document."
+  },
+  {
+    "objectID": "01_mapsf.html#introduction",
+    "href": "01_mapsf.html#introduction",
+    "title": "1  mapsf",
+    "section": "1.1 Introduction",
+    "text": "1.1 Introduction\n\nThe R spatial ecosystem is rich, dynamic and mature and several packages allow to import, process and represent spatial data. The mapsf package (Giraud, 2021) relies on this ecosystem to integrate the creation of quality thematic maps in R workflows. mapsf uses sf objects to produce base graphics.\n\n\n\nA typical workflow\n\n\nWe will mainly use mapsf in this document as it has a quite complete set of features, it is easy to use and it is relatively lightweight.\n\n\n\n\n\n\nA minimal number of well-known dependancies\n\n\nThe aim of mapsf is to obtain thematic maps with the visual quality of those build with a classical mapping or GIS software.\nUsers of the package could belong to one of two categories: cartographers willing to use R or R users willing to create maps. Therefore, its functions have to be intuitive to cartographers and ensure compatibility with common R workflows.\nmapsf functions can be classified in the following categories:\n\nSymbology\nThe main function, mf_map(), displays map layers on a georeferenced plot. It has three main arguments ( x, an sf object; var, the name(s) of a variable(s) to map;type, the map layer type). Many parameters are available to fine tune the cartographic representations. These parameters are the common ones found in GIS and automatic cartography tools (e.g. classification and color palettes used in choropleth maps, symbols sizes used in proportional symbols maps…).\nMap Layout\nAlong with the cartographic functions, some other functions are dedicated to layout design (e.g. legends, scale bar, north arrow, title, credits…).\nUtility Functions\nA set of functions is dedicated to the creation of spatial objects (e.g. links creation) or other utility tasks (e.g. color palette management, class intervals extraction, sample dataset import…).\n\n\n\n\n\n\n\nmapsf is the successor of cartography(Giraud and Lambert, 2016). See mapsf vignette to migrate from cartography to mapsf.\n\n\n\n\n\n\n\n\n\nOther packages can be used to create thematic maps with R:\n\n\n\n\nThe ggplot2 package (Wickham, 2016), in association with the ggspatial package (Dunnington, 2021), allows for example to display spatial objects and to make simple thematic maps.\n\nThe tmap package (Tennekes, 2018) is dedicated to the creation of thematic maps, it uses a syntax close to that of ggplot2 (sequence of instructions combined with the ‘+’ sign).\n\nDocumentation and tutorials to use these two packages are easily available on the web."
+  },
+  {
+    "objectID": "01_mapsf.html#documentation",
+    "href": "01_mapsf.html#documentation",
+    "title": "1  mapsf",
+    "section": "1.2 Documentation",
+    "text": "1.2 Documentation\n\nA website\n\n\n\nA ‘Get started’ vignette.\n‘How to’ vignettes:\n\nHow to create faceted maps\nHow to create inset maps\nHow to export maps\nHow to use a custom font family\nHow to use themes\n\nA cheat sheet"
+  },
+  {
+    "objectID": "01_mapsf.html#exercice",
+    "href": "01_mapsf.html#exercice",
+    "title": "1  mapsf",
+    "section": "1.3 Exercice",
+    "text": "1.3 Exercice\n\nInstall mapsf.\n\nWhat is the version of the package?\n\nWhat is new in the package?\n\n\n\n\n\nDunnington, D. (2021). ggspatial: Spatial data framework for ggplot2. https://CRAN.R-project.org/package=ggspatial\n\n\nGiraud, T. (2021). mapsf: Thematic cartography. https://CRAN.R-project.org/package=mapsf\n\n\nGiraud, T. and Lambert, N. (2016). cartography: Create and Integrate Maps in your R Workflow. JOSS, 1(4). https://doi.org/10.21105/joss.00054\n\n\nTennekes, M. (2018). tmap: Thematic maps in R. Journal of Statistical Software, 84(6), 1–39. https://doi.org/10.18637/jss.v084.i06\n\n\nWickham, H. (2016). ggplot2: Elegant graphics for data analysis. Springer-Verlag New York. https://ggplot2.tidyverse.org"
+  },
+  {
+    "objectID": "02_map_type.html#example-dataset",
+    "href": "02_map_type.html#example-dataset",
+    "title": "2  Map types",
+    "section": "2.1 Example dataset",
+    "text": "2.1 Example dataset\nThe following code imports relevant layers from the geopackage file lot46.gpkg.\n\nlibrary(sf)\n\n#> Linking to GEOS 3.9.0, GDAL 3.2.2, PROJ 7.2.1; sf_use_s2() is TRUE\n\n# import municipalities\ncom <- st_read(\"data/lot46.gpkg\", layer = \"commune\", quiet = TRUE)\n# import departments\ndep <- st_read(\"data/lot46.gpkg\", layer = \"departement\", quiet = TRUE)\n# import restaurants\nresto <- st_read(\"data/lot46.gpkg\", layer = \"restaurant\", quiet = TRUE)\n# import roads\nroute <- st_read(\"data/lot46.gpkg\", layer = \"route\", quiet = TRUE)"
+  },
+  {
+    "objectID": "02_map_type.html#plot-a-base-map",
+    "href": "02_map_type.html#plot-a-base-map",
+    "title": "2  Map types",
+    "section": "2.2 Plot a base map",
+    "text": "2.2 Plot a base map\nmf_map(x, type = \"base\") displays sf objects geometries.\n\nlibrary(mapsf)\n# Municipalities\nmf_map(x = com, border = \"white\")\nmf_map(x = dep, lwd = 2, col = NA, add = TRUE)\nmf_map(x = route, lwd = .5, col = \"ivory4\", add = TRUE)\nmf_map(x = resto, pch = 20, cex = .7, col = \"darkred\", add = TRUE)"
+  },
+  {
+    "objectID": "02_map_type.html#proportional-symbols",
+    "href": "02_map_type.html#proportional-symbols",
+    "title": "2  Map types",
+    "section": "2.3 Proportional Symbols",
+    "text": "2.3 Proportional Symbols\nmf_map(x, var, type = \"prop\") displays symbols with areas proportional to a quantitative variable (stocks). The inches argument is used to customize the symbols sizes.\n\n# Municipalities\nmf_map(x = com)\n# Proportional Symbols\nmf_map(\n  x = com, \n  var = \"POPULATION\",\n  type = \"prop\",\n  leg_title = \"Total population\\n(2015)\"\n)\n# Title\nmf_title(\"Population distribution in the Lot department\")"
+  },
+  {
+    "objectID": "02_map_type.html#choropleth-map",
+    "href": "02_map_type.html#choropleth-map",
+    "title": "2  Map types",
+    "section": "2.4 Choropleth Map",
+    "text": "2.4 Choropleth Map\nIn choropleth maps, areas are shaded according to the variation of a quantitative variable. They are used to represent ratios or indices.\nmf_map(x, var, type = \"choro\") displays choropleth maps . Arguments nbreaks, and breaks allow to customize the variable classification. mf_get_breaks() allows to classify data outside of the function itself.\n\n# Population density\ncom$DENS <- 1e6 * com$POP / as.numeric(st_area(com))\nmf_map(\n  x = com,\n  var = \"DENS\",\n  type = \"choro\",\n  breaks = \"quantile\",\n  pal = \"Dark Mint\",\n  lwd = 1,\n  leg_title = \"Population density\\n(inh. per km2)\", \n  leg_val_rnd = 0\n)\nmf_title(\"Population distribution in the Lot department\")\n\n\n\n\n\n2.4.1 Color palettes\nColors palettes, defined with pal, can be created with mf_get_pal() or you can use palette names from hcl.pals().\n\nmf_map(x = com, var = \"DENS\", type = \"choro\",\n       breaks = \"quantile\", nbreaks = 4, pal = \"Mako\")\n\n\n\n\n\nmf_get_pal() builds sequential, diverging and qualitative color palettes. Diverging color palettes can be dissymmetric (different number of colors in each of the two gradients).\n\nmypal <- mf_get_pal(n = c(6,3), palette = c(\"Burg\", \"Teal\"))\nimage(1:9, 1, as.matrix(1:9), col=mypal, xlab = \"\", ylab = \"\", xaxt = \"n\",\n      yaxt = \"n\",bty = \"n\")"
+  },
+  {
+    "objectID": "02_map_type.html#typology-map",
+    "href": "02_map_type.html#typology-map",
+    "title": "2  Map types",
+    "section": "2.5 Typology Map",
+    "text": "2.5 Typology Map\nmf_map(x, var, type = \"typo\") displays a typology map of a qualitative variable.\n\nmf_map(\n  x = com,\n  var = \"STATUT\",\n  type = \"typo\",\n  pal = c(\"aquamarine4\", \"yellow3\",\"wheat\"),\n  lwd = .7,\n  leg_title = \"\"\n)\nmf_title(\"Municipality status\")\n\n\n\n\nval_order can be used to set the modalities order in the legend.\n\nmf_map(\n  x = com,\n  var=\"STATUT\",\n  type = \"typo\",\n  pal = c(\"aquamarine4\", \"yellow3\",\"wheat\"),\n  val_order = c(\"Préfecture\", \"Sous-préfecture\", \"Commune simple\"),\n  lwd = .7,\n  leg_title = \"\"\n)\nmf_title(\"Municipality status\")"
+  },
+  {
+    "objectID": "02_map_type.html#proportional-symbols-using-choropleth-coloration",
+    "href": "02_map_type.html#proportional-symbols-using-choropleth-coloration",
+    "title": "2  Map types",
+    "section": "2.6 Proportional Symbols using Choropleth Coloration",
+    "text": "2.6 Proportional Symbols using Choropleth Coloration\nmf_map(x, var, type = \"prop_choro\") creates a map of symbols that are proportional to values of a first variable and colored to reflect the classification of a second variable.\n\nmf_map(x = com)\nmf_map(\n  x = com,\n  var = c(\"POPULATION\", \"DENS\"),\n  type = \"prop_choro\",\n  border = \"grey50\",\n  lwd = 1,\n  leg_pos = c(\"topright\", \"topleft\"),\n  leg_title = c(\"Population\", \"Population density\\n(inh. per km2)\"), \n  breaks = \"q6\",\n  pal = \"Magenta\",\n  leg_val_rnd = c(0,1))\nmf_title(\"Population\")"
+  },
+  {
+    "objectID": "02_map_type.html#proportional-symbols-using-typology-coloration",
+    "href": "02_map_type.html#proportional-symbols-using-typology-coloration",
+    "title": "2  Map types",
+    "section": "2.7 Proportional Symbols using Typology Coloration",
+    "text": "2.7 Proportional Symbols using Typology Coloration\nmf_map(x, var, type = \"prop_typo\") creates a map of symbols that are proportional to values of a first variable and colored to reflect the modalities of a second qualitative variable.\n\nmf_map(x = com)\nmf_map(\n  x = com,\n  var = c(\"POPULATION\", \"STATUT\"),\n  type = \"prop_typo\",\n  pal = c(\"aquamarine4\", \"yellow3\",\"wheat\"),\n  val_order = c(\"Préfecture\", \"Sous-préfecture\", \"Commune simple\"),\n  leg_pos = c(\"bottomleft\",\"topleft\"),\n  leg_title = c(\"Population\\n(2015)\",\n                \"Municipality status\"),\n)\nmf_title(\"Population\")"
+  },
+  {
+    "objectID": "03_map_layout.html#themes",
+    "href": "03_map_layout.html#themes",
+    "title": "3  Map layout",
+    "section": "3.1 Themes",
+    "text": "3.1 Themes\nmf_theme() sets a map theme. A theme is a set of graphical parameters that are applied to maps created with mapsf. These parameters are the figure margins, background and foreground colors and mf_title() options. mapsf offers some builtin themes. It’s possible to modify an existing theme or to start a theme from scratch. The map theme can also be set with mf_init() and mf_export().\n\n3.1.1 Using a predefined theme\n\nlibrary(mapsf)\nopar <- par(mfrow = c(2,2))\nmf_theme(\"default\")\nmf_map(com)\nmf_title(\"Theme : 'default'\")\nmf_theme(\"darkula\")\nmf_map(com)\nmf_title(\"Theme : 'darkula'\")\nmf_theme(\"candy\")\nmf_map(com)\nmf_title(\"Theme : 'candy'\")\nmf_theme(\"nevermind\")\nmf_map(com)\nmf_title(\"Theme : 'nevermind'\")\npar(opar)\n\n\n\n\n\n\n3.1.2 How to modify an existing theme\nIt is possible to modify an existing theme. In this example we use the “default” theme and modify some title parameters.\n\nlibrary(mapsf)\nopar <- par(mfrow = c(1,2))\nmf_theme(\"default\")\nmf_map(com)\nmf_title(\"default\")\nmf_theme(\n  x = \"default\", \n  tab = FALSE, \n  font = 4, \n  bg = \"grey60\", \n  pos = \"center\"\n)\nmf_map(com)\nmf_title(\"modified default\")\npar(opar)\n\n\n\n\n\n\n3.1.3 How to create a new theme\nIt is possible to create a new theme.\n\nmf_theme(\n  bg = \"lightblue\",   \n  fg = \"tomato1\",      \n  mar = c(0,0,1.5,0),\n  tab = FALSE,        \n  inner = FALSE,       \n  line = 1.5,          \n  pos = \"center\",      \n  cex = 1.2,           \n  font = 2  \n)\nmf_map(com)\nmf_title(\"New theme\")"
+  },
+  {
+    "objectID": "03_map_layout.html#les-titres",
+    "href": "03_map_layout.html#les-titres",
+    "title": "3  Map layout",
+    "section": "3.2 Les titres",
+    "text": "3.2 Les titres\nmf_title() plots a tile on the map.\n\nmf_theme(\"default\")\nmf_map(com)\nmf_title(\"Map title\")\n\n\n\n\nThe title parameters can be modified.\n\nmf_map(com)\nmf_title(\n  txt = \"Map title\", \n  pos = \"center\", \n  tab = FALSE, \n  bg = \"tomato3\", \n  fg = \"lightblue\", \n  cex = 1, \n  line = 1.2, \n  font = 1, \n  inner = FALSE\n)"
+  },
+  {
+    "objectID": "03_map_layout.html#north-arrow",
+    "href": "03_map_layout.html#north-arrow",
+    "title": "3  Map layout",
+    "section": "3.3 North arrow",
+    "text": "3.3 North arrow\nmf_arrow() plots a north arrow on the map.\n\nmf_map(com)\nmf_arrow()"
+  },
+  {
+    "objectID": "03_map_layout.html#scale-bar",
+    "href": "03_map_layout.html#scale-bar",
+    "title": "3  Map layout",
+    "section": "3.4 Scale bar",
+    "text": "3.4 Scale bar\nmf_scale() plots a scale bar on the map.\n\nmf_map(com)\nmf_scale(\n  size = 20,\n  lwd = 2,\n  cex = 1.2,\n)"
+  },
+  {
+    "objectID": "03_map_layout.html#credits",
+    "href": "03_map_layout.html#credits",
+    "title": "3  Map layout",
+    "section": "3.5 Credits",
+    "text": "3.5 Credits\nmf_credits() plots credits at the bottom of the map.\n\nmf_map(com)\nmf_credits(\"Source: ..... \\nAuthors: ............\")"
+  },
+  {
+    "objectID": "03_map_layout.html#full-map-layout",
+    "href": "03_map_layout.html#full-map-layout",
+    "title": "3  Map layout",
+    "section": "3.6 Full map layout",
+    "text": "3.6 Full map layout\nmf_layout() add a complete layout to the map (title, credits, north arrow, scale bar). Each layout elements can also be set separately (with mf_title(), mf_credits(), mf_arrow() and mf_scale()).\n\nmf_map(com)\nmf_layout(\n  title = \"Le Lot\",\n  credits = \"Author: .......\\nSources: ................\",\n  arrow = TRUE\n)"
+  },
+  {
+    "objectID": "03_map_layout.html#annotations",
+    "href": "03_map_layout.html#annotations",
+    "title": "3  Map layout",
+    "section": "3.7 Annotations",
+    "text": "3.7 Annotations\n\n# select a municipality\ncahors <- com[com$NOM_COM == \"Cahors\", ]\nmf_map(com)\nmf_annotation(\n  x = cahors, \n  txt = \"Cahors\", \n  halo = TRUE, \n  cex = 1.5\n)"
+  },
+  {
+    "objectID": "03_map_layout.html#legends",
+    "href": "03_map_layout.html#legends",
+    "title": "3  Map layout",
+    "section": "3.8 Legends",
+    "text": "3.8 Legends\n\nmf_map(com)\nmf_legend(\n  type = \"prop\", \n  val = c(1000,500,200,10), \n  inches = .4, \n  title = \"Population\", \n  pos = \"topleft\"\n)\nmf_legend(\n  type = \"choro\", \n  val = c(0,10,20,30,40),\n  pal = \"Greens\", \n  pos = \"bottomright\", \n  val_rnd = 0\n)"
+  },
+  {
+    "objectID": "03_map_layout.html#labels",
+    "href": "03_map_layout.html#labels",
+    "title": "3  Map layout",
+    "section": "3.9 Labels",
+    "text": "3.9 Labels\nmf_label() displays labels on the map.\n\n# select a set of municipalities\n\ncom_sel <- \n  com[st_intersects(com, com[com$NOM_COM == \"Cahors\", ], sparse = F), ]\n\nmf_map(com_sel)\nmf_label(\n  x = com_sel,\n  var = \"NOM_COM\",\n  col= \"black\",\n  halo = TRUE,\n  overlap = FALSE, \n  lines = FALSE\n)\nmf_scale()\n\n\n\n\nIf halo = TRUE then a halo is printed around the text.\nIf overlap = FALSE then labels are moved so they do not overlap."
+  },
+  {
+    "objectID": "03_map_layout.html#center-the-map-on-a-specific-area",
+    "href": "03_map_layout.html#center-the-map-on-a-specific-area",
+    "title": "3  Map layout",
+    "section": "3.10 Center the map on a specific area",
+    "text": "3.10 Center the map on a specific area\nmf_init() is designed to initiate a map centered on a specific extent (x bbox). The theme argument allows to select a theme.\n\n\n\n\n\n\nAlways use add = TRUE after mf_init().\n\n\n\n\nmf_init(x = com_sel, theme = \"iceberg\")\nmf_map(com, add = TRUE)\nmf_map(com_sel, col = NA, border = \"red\", lwd = 2, add = TRUE)"
+  },
+  {
+    "objectID": "03_map_layout.html#display-several-maps-on-the-same-figure",
+    "href": "03_map_layout.html#display-several-maps-on-the-same-figure",
+    "title": "3  Map layout",
+    "section": "3.11 Display several maps on the same figure",
+    "text": "3.11 Display several maps on the same figure\nTo plot several maps on the same figure, the user can use the mfrow argument of the par() function before plotting the maps. For example, use par(mfrow = c(1, 2)) (i.e. 1 row, 2 columns) to plot two maps side by side).\n\n# define the figure layout (1 row, 2 columns)\npar(mfrow = c(1, 2))\n# define theme\nmf_theme(\"default\", mar = c(0,0,1.2,0), tab = FALSE, pos = \"center\")\n# first map\nmf_map(com)\nmf_map(com, \"TER_F\", \"prop\", \n       val_max = 4000, \n       leg_pos = \"topleft\", \n       leg_title = \"n.\")\nmf_title(\"Tertiary: Women\")\n# second map\nmf_map(com)\nmf_map(com, \"TER_H\", \"prop\", \n       val_max = 4000, \n       leg_pos = NA)\nmf_title(\"Men\")"
+  },
+  {
+    "objectID": "03_map_layout.html#export-maps",
+    "href": "03_map_layout.html#export-maps",
+    "title": "3  Map layout",
+    "section": "3.12 Export maps",
+    "text": "3.12 Export maps\nmf_export() exports maps in PNG or SVG formats.\nThe exported map width/height ratio will match the one of a spatial object.\nIf width is specified, then height is deduced from the width/height ratio of x, figure margins and title size.\nIf height is specified, then width is deduced from the width/height ratio of x, figure margins and title size.\nAdditionally, mf_export() can be used to set a theme, to extend the map space on one or several side of the figure, or to center a map on a specific area.\n\n\n\n\n\n\nAlways use add = TRUE after mf_export() and do not forget to add dev.off() at the end of the export.\n\n\n\n\nmf_theme(\"candy\", bg = \"grey80\")\nmf_export(com, \"img/c2c2.png\", width = 480)\nmf_map(com)\nmf_title(\"Le Lot\")\ndev.off()\n\n\nIn the following export we have added some space on the right side of the plot (50% of x width).\n\nmf_export(\n  x = com, \n  filename = \"img/c2c2_expand.png\",\n  width = 480, \n  expandBB = c(0, 0, 0, .5), \n  theme = \"candy\"\n)\nmf_map(com, add = TRUE)\nmf_title(\"Le Lot\")\ndev.off()\n\n\nmf_export() can produce SVG figures (with export = \"svg\") and use other parameters of png() or svg() functions (e.g. res, bg or family)."
+  },
+  {
+    "objectID": "03_map_layout.html#add-an-image-on-the-map",
+    "href": "03_map_layout.html#add-an-image-on-the-map",
+    "title": "3  Map layout",
+    "section": "3.13 Add an image on the map",
+    "text": "3.13 Add an image on the map\nreadPNG() from the png package can be used to add an image on a map.\n\nmf_theme(\"default\", mar = c(0,0,0,0))\nlibrary(png)\n# image import\nlogo <- readPNG(\"img/Logo CG 46 - Bleu.png\")\n# image dimension\npp <- dim(logo)[2:1] * 20\n# Coordinates of the topleft corner of com bounding box\nxy <- st_bbox(com)[c(1,4)]\nmf_map(com, col = \"#D1914D\", border = \"white\")\nrasterImage(\n  image   = logo,\n  xleft   = xy[1],\n  ybottom = xy[2] - pp[2],\n  xright  = xy[1] + pp[1],\n  ytop    = xy[2]\n)"
+  },
+  {
+    "objectID": "03_map_layout.html#interactive-placement-of-layout-elements",
+    "href": "03_map_layout.html#interactive-placement-of-layout-elements",
+    "title": "3  Map layout",
+    "section": "3.14 Interactive placement of layout elements",
+    "text": "3.14 Interactive placement of layout elements\nSome layout elements can be positioned interactively on the map (legends, north arrow, scale bar…)."
+  },
+  {
+    "objectID": "03_map_layout.html#add-a-shadow-to-a-layer",
+    "href": "03_map_layout.html#add-a-shadow-to-a-layer",
+    "title": "3  Map layout",
+    "section": "3.15 Add a shadow to a layer",
+    "text": "3.15 Add a shadow to a layer\nmf_shadow() plots the shadow of a polygon layer.\n\nmf_shadow(com)\nmf_map(com, add=TRUE)"
+  },
+  {
+    "objectID": "03_map_layout.html#add-an-inset-on-the-map",
+    "href": "03_map_layout.html#add-an-inset-on-the-map",
+    "title": "3  Map layout",
+    "section": "3.16 Add an inset on the map",
+    "text": "3.16 Add an inset on the map\nmf_inset*() functions create map insets.\nmf_inset_on() starts the inset and mf_inset_off() closes it.\nIf map layers have to be plotted after the inset (i.e after mf_inset_off()), please use add = TRUE.\nIt is not possible to plot an inset within an inset.\nIt is possible to plot anything (base plots) within the inset, not only map layers.\n\nmf_init(x = com_sel, theme = \"agolalight\", expandBB = c(0,.1,0,.5))\nmf_map(com, add = TRUE)\nmf_map(com_sel, col = \"tomato4\", border = \"tomato1\", lwd = 2, add = TRUE)\n# Inset France\nmf_inset_on(x = dep, pos = \"topright\", cex = .3)\nmf_map(dep, lwd = .5, border= \"grey90\")\nmf_map(com_sel, col = \"tomato4\", border = \"tomato1\", lwd = .5, add = TRUE)\nmf_scale(size = 200, pos = \"bottomleft\", cex = .6, lwd = .5)\nmf_inset_off()\n# Inset Lot\nmf_inset_on(x = com, pos = \"bottomright\", cex = .3)\nmf_map(com, lwd = .5, border= \"grey90\")\nmf_map(com_sel, col = \"tomato4\", border = \"tomato1\", lwd = .5, add = TRUE)\nmf_scale(size = 20, pos = \"bottomright\", cex = .6, lwd = .5)\nmf_inset_off()\n# Inset World Monde\nmf_inset_on(x = \"worldmap\", pos = \"topleft\")\nmf_worldmap(com_sel, land_col = \"#cccccc\",border_col = NA, \n            water_col =  \"#e3e3e3\", col = \"tomato4\")\nmf_inset_off()\nmf_title(\"Cahors in the World\")\nmf_scale(1, pos = 'bottomleft')\n\n\n\n\n\n\n\n\n\n\nWorld Map Inset\n\n\n\nIt is easy to create an inset with a world map (see mf_worldmap()) using x = \"worldmap\".\n\nmf_map(com)\nmf_inset_on(x = \"worldmap\")\nmf_worldmap(com)\nmf_inset_off()"
+  },
+  {
+    "objectID": "04_references.html",
+    "href": "04_references.html",
+    "title": "References",
+    "section": "",
+    "text": "Dunnington, D. (2021). ggspatial: Spatial Data\nFramework for ggplot2. https://CRAN.R-project.org/package=ggspatial\n\n\nGiraud, T. (2021). mapsf: Thematic Cartography. https://CRAN.R-project.org/package=mapsf\n\n\nGiraud, T. et Lambert, N. (2016). cartography: Create and\nIntegrate Maps in your R Workflow. JOSS, 1(4).\nhttps://doi.org/10.21105/joss.00054\n\n\nTennekes, M. (2018). tmap: Thematic Maps in R.\nJournal of Statistical Software, 84(6), 1‑39. https://doi.org/10.18637/jss.v084.i06\n\n\nWickham, H. (2016). ggplot2: Elegant Graphics for Data\nAnalysis. Springer-Verlag New York. https://ggplot2.tidyverse.org"
+  }
+]

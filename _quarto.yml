@@ -1,0 +1,54 @@
+project:
+  type: book
+  output-dir: docs
+  resources: 
+    - "geodata.zip"
+  
+book:
+  title: "Mapping with R"
+  description: "Create thematic maps with R."
+  author:
+    - name: Timothée Giraud
+      orcid: 0000-0001-5679-6536
+      email: timothee.giraud@cnrs.fr
+      affiliations:
+        - id: 1
+          name: RIATE (CNRS)
+          url: https://riate.cnrs.fr
+  date: "29 November 2022"
+  search: false
+  # repo-url: https://github.com/rcarto/ined2022/
+  sharing: []
+  cover-image: img/globe-africa-solid.svg
+  page-footer: 
+    left: "[![CreativeCommonsLicense](img/by-nc-sa.png)](https://creativecommons.org/licenses/by-nc-sa/4.0/)"
+  favicon: img/globe-africa-solid.svg
+  twitter-card: 
+    image: img/globe-africa-solid.png
+    card-style: summary_large_image
+    creator: "rgeomatic"
+  # site-url: https://rcarto.github.io/ined2022/
+  open-graph: true
+  chapters:
+    - index.qmd
+    - 01_mapsf.qmd
+    - 02_map_type.qmd
+    - 03_map_layout.qmd
+    - 04_references.qmd  
+
+    
+
+
+
+bibliography: references.bib
+
+lang: en
+
+csl: "universite-de-montreal-apa.csl"
+
+
+format:
+  html:
+    callout-appearance: simple
+    callout-icon: false
+    theme: cosmo

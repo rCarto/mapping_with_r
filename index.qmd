@@ -1,0 +1,16 @@
+# *Preambule* {.unnumbered}
+
+**Create and integrate thematic maps in your R workflow.** 
+
+The purpose of this document is to provide support for learning how to create maps with R. 
+
+**How to use this document**  
+Data used in this document are stored in an RStudio project. 
+Once the file is unzipped, it is possible to test all the demontrations from within the **geodata** project.   
+[Download the project](geodata.zip){.btn .btn-primary .btn-sm role="button"}  
+
+
+**Contribution and feedback**  
+You can send us your comments and suggestions by [posting an issue](https://github.com/rCarto/*) on the [GitHub repository](https://github.com/rCarto/*) of this document. 
+
+
