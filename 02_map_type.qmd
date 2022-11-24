@@ -191,61 +191,25 @@ mf_title("Population")
   
 ## Exercice
 
+The **khm** project contain a toy dataset on Cambodia. You have download and unzip it.    
+[Download the project](khm.zip){.btn .btn-primary .btn-sm role="button"}  
+You can then open the project and do the exercise in it.
+
 
 1. Import the **khm** layer from the geopackage file **data/khm.gpkg**.
-
-
-```{r}
-library(sf)
-khm <- st_read("data/khm.gpkg", "khm")
-land <- st_read("data/khm.gpkg", "land")
-```
 
 2. Plot a map of Cambodia regions (ADM2 level).  
 Regions should be grey with a thin red border.  
 
-```{r}
-library(mapsf)
-mf_map(khm, col = "grey", border = "red", lwd = .5)
-```
-
-
 3. Create a map of regional population (**T_TL**).  
 Display the legend in the top right corner of the map with a frame. 
-
-```{r}
-mf_map(khm)
-mf_map(khm, 'T_TL', "prop", inches = .1, leg_pos = "topright", leg_frame = TRUE)
-```
-
 
 4. Create a map of regional belonging (level 1, **ADM1_EN** variable).  
 Do not display any legend.
 
-```{r}
-mf_map(khm, "ADM1_EN", "typo", lwd = .2, leg_pos = NA)
-```
-
 5. Combine total population and regional belonging on the same map.
 
-```{r}
-mf_map(khm, "ADM1_EN", "typo", leg_pos = NA)
-mf_map(khm, 'T_TL', "prop", inches = .1)
-```
-
-```{r}
-mf_map(khm)
-mf_map(khm, c('T_TL', "ADM1_EN"), "prop_typo", inches = .1, leg_pos = c("bottomright", NA))
-```
-
-
 6. Compute the population density for each region and create a map of the population density. 
-
-```{r}
-khm$DENS <- 1e6 * khm$T_TL / as.numeric(st_area(khm))
-mf_map(khm, "DENS", "choro", breaks = "geom", nbreaks = 5)
-```
-
 
 
 

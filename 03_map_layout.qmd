@@ -452,6 +452,7 @@ knitr::opts_chunk$set(cache = FALSE)
 library(sf)
 khm <- st_read("data/khm.gpkg", "khm")
 land <- st_read("data/khm.gpkg", "land")
+water <- st_read("data/khm.gpkg", "water")
 ```
 
 
@@ -463,24 +464,27 @@ khm$sex_ratio <- khm$M_TL / khm$F_TL
 3. Create a map of the sex ratio
 
 ```{r}
+hist(khm$sex_ratio)
+summary(khm$sex_ratio)
+boxplot(khm$sex_ratio)
 library(mapsf)
 bks <- mf_get_breaks(khm$sex_ratio, breaks = "msd", central = T)
 pals <- mf_get_pal(n = c(3,3), palette = c('Peach', 'Teal'), neutral = "grey90")
-
 mf_map(khm, 'sex_ratio',"choro", breaks = bks, pal = pals, leg_val_rnd = 3)
-
 ```
 
 4. Add all relevant layout elements
 
 :::{.callout-note}
-You can also add the land around Cambodia for example:
+You can also add the land around Cambodia and the Tonlé Sap lake, for example:
 ```{r}
 #| fig.width: 3
 #| fig-height: 3
 mf_init(khm)
-mf_map(land, add = T, col = "grey", border = NA)
-mf_map(khm, add = T, col = "lightgreen")
+mf_map(land, add = T, col = "#f2efe9", border = "#f2efe9")
+mf_map(water, add = T, col = "lightblue", border = 'lightblue', lwd = 1.5)
+mf_map(khm, add = T, col = "#c2dcb6", border = "grey50")
+mf_title("Cambodia")
 ```
 :::
 
@@ -495,18 +499,18 @@ my_theme <- mf_theme(x = "default", bg = "lightblue",
 
 ```{r}
 mf_init(khm, theme = my_theme, expandBB = c(0,0,0,.5))
-mf_map(land, add = T, col = "grey", border = NA)
-mf_map(khm, 'sex_ratio',"choro", 
+mf_map(land, add = T, col = "#f2efe9", border = NA)
+mf_map(water, add = T, col = "lightblue", border = 'lightblue', lwd = 1.5)
+mf_map(khm, 'sex_ratio',"choro", border = "grey50",
        breaks = bks, pal = pals,  leg_pos = "bottomright",
        leg_val_rnd = 3, add = TRUE)
-
 mf_inset_on(x = khm[khm$ADM1_EN=="Phnom Penh", ], cex = .3)
-mf_init(khm[khm$ADM1_EN=="Phnom Penh", ], theme = "default")
-mf_map(khm, 'sex_ratio',"choro", breaks = bks, pal = pals, 
+mf_init(khm[khm$ADM1_EN=="Phnom Penh", ], theme = my_theme)
+mf_map(khm, 'sex_ratio',"choro", breaks = bks, pal = pals,  border = "grey50",
        add = T, leg_pos = NA)
-mf_title("Phnom Penh")
+mf_title("Phnom Penh", fg = "white")
 mf_inset_off()
-mf_title('Sex Ratio')
+mf_title('Sex Ratio', fg = "white")
 
 ```
 
@@ -517,16 +521,17 @@ mf_export(khm, filename = "img/khm.png",
           width = 800, expandBB = c(0,0,0,.5), 
           theme = my_theme)
 mf_map(land,  col = "#f2efe9", border = NA, add = T)
+mf_map(water, add = T, col = "lightblue", border = 'lightblue', lwd = 1.5)
 mf_map(khm, 'sex_ratio',"choro", breaks = bks, pal = pals, 
-       leg_val_rnd = 3, add = T)
+       leg_val_rnd = 3, add = T,  border = "grey50")
 mf_inset_on(x = khm[khm$ADM1_EN=="Phnom Penh", ], cex = .3)
 mf_init(khm[khm$ADM1_EN=="Phnom Penh", ], theme = my_theme)
-mf_map(khm, 'sex_ratio',"choro", breaks = bks, pal = pals, 
+mf_map(khm, 'sex_ratio',"choro", breaks = bks, pal = pals,  border = "grey50",
        add = T, leg_pos = NA)
-mf_title("Phnom Penh")
+mf_title("Phnom Penh", fg = "white")
 # box(which = "plot")
 mf_inset_off()
-mf_title('Sex Ratio')
+mf_title('Sex Ratio', fg = "white")
 
 dev.off()
 ```
@@ -540,21 +545,22 @@ mf_export(khm, filename = "img/khm2.png",
           width = 800, expandBB = c(0,0,0,.5), 
           theme = my_theme)
 mf_map(land,  col = "#f2efe9", border = NA, add = T)
-mf_map(khm, add = T, col = "#c2dcb6", lwd =.7, border = "grey60")
+mf_map(water, add = T, col = "lightblue", border = 'lightblue', lwd = 1.5)
+mf_map(khm, add = T, col = "#c2dcb6", lwd =.7, border = "grey50")
 mf_map(khm, c('T_TL', 'sex_ratio'),"prop_choro", 
        breaks = bks, pal = pals, 
        leg_val_rnd = c(0,3),
        leg_pos = c("bottomright", c(901474.8, 1307543)),
-       inches = .1)
+       inches = .2)
 mf_inset_on(x = khm[khm$ADM1_EN=="Phnom Penh", ], cex = .3)
 mf_init(khm[khm$ADM1_EN=="Phnom Penh", ], theme = my_theme)
 mf_map(khm, add = T, col = "#c2dcb6", lwd =.7, border = "grey60")
-mf_map(khm, c('T_TL', 'sex_ratio'),"prop_choro", inches = .1,
+mf_map(khm, c('T_TL', 'sex_ratio'),"prop_choro", inches = .2,
        breaks = bks, pal = pals, leg_pos = c(NA, NA))
-mf_title("Phnom Penh")
+mf_title("Phnom Penh", fg = "white")
 # box(which = "plot")
 mf_inset_off()
-mf_title('Pop & Sex Ratio')
+mf_title('Pop & Sex Ratio', fg = "white")
 dev.off()
 
 ```

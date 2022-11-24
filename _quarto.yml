@@ -3,6 +3,8 @@ project:
   output-dir: docs
   resources: 
     - "geodata.zip"
+    - "khm.zip"
+  
   
 book:
   title: "Mapping with R"

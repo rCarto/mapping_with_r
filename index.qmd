@@ -6,7 +6,7 @@ The purpose of this document is to provide support for learning how to create ma
 
 **How to use this document**  
 Data used in this document are stored in an RStudio project. 
-Once the file is unzipped, it is possible to test all the demontrations from within the **geodata** project.   
+Once the file is unzipped, it is possible to test all the demonstrations from within the **geodata** project.   
 [Download the project](geodata.zip){.btn .btn-primary .btn-sm role="button"}  
 
 

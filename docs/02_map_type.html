@@ -401,93 +401,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="exercice" class="level2" data-number="2.8">
 <h2 data-number="2.8" class="anchored" data-anchor-id="exercice"><span class="header-section-number">2.8</span> Exercice</h2>
+<p>The <strong>khm</strong> project contain a toy dataset on Cambodia. You have download and unzip it.<br>
+<a href="khm.zip" class="btn btn-primary btn-sm" role="button">Download the project</a><br>
+You can then open the project and do the exercise in it.</p>
 <ol type="1">
-<li>Import the <strong>khm</strong> layer from the geopackage file <strong>data/khm.gpkg</strong>.</li>
+<li><p>Import the <strong>khm</strong> layer from the geopackage file <strong>data/khm.gpkg</strong>.</p></li>
+<li><p>Plot a map of Cambodia regions (ADM2 level).<br>
+Regions should be grey with a thin red border.</p></li>
+<li><p>Create a map of regional population (<strong>T_TL</strong>).<br>
+Display the legend in the top right corner of the map with a frame.</p></li>
+<li><p>Create a map of regional belonging (level 1, <strong>ADM1_EN</strong> variable).<br>
+Do not display any legend.</p></li>
+<li><p>Combine total population and regional belonging on the same map.</p></li>
+<li><p>Compute the population density for each region and create a map of the population density.</p></li>
 </ol>
-<div class="cell" data-hash="02_map_type_cache/html/unnamed-chunk-2_bc81cbad082798e68871bb0154f1708f">
-<div class="sourceCode cell-code" id="cb13"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb13-1"><a href="#cb13-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span>
-<span id="cb13-2"><a href="#cb13-2" aria-hidden="true" tabindex="-1"></a>khm <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/khm.gpkg"</span>, <span class="st">"khm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Reading layer `khm' from data source 
-#&gt;   `/home/tim/Documents/prz/Cambodge/mapping_with_r/data/khm.gpkg' 
-#&gt;   using driver `GPKG'
-#&gt; Simple feature collection with 197 features and 9 fields
-#&gt; Geometry type: MULTIPOLYGON
-#&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: 211534.7 ymin: 1149105 xmax: 784612.1 ymax: 1625495
-#&gt; Projected CRS: WGS 84 / UTM zone 48N</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb15"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb15-1"><a href="#cb15-1" aria-hidden="true" tabindex="-1"></a>land <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/khm.gpkg"</span>, <span class="st">"land"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Reading layer `land' from data source 
-#&gt;   `/home/tim/Documents/prz/Cambodge/mapping_with_r/data/khm.gpkg' 
-#&gt;   using driver `GPKG'
-#&gt; Simple feature collection with 1 feature and 0 fields
-#&gt; Geometry type: MULTIPOLYGON
-#&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: -309078.2 ymin: 623720.5 xmax: 986103.6 ymax: 2584098
-#&gt; Projected CRS: WGS 84 / UTM zone 48N</code></pre>
-</div>
-</div>
-<ol start="2" type="1">
-<li>Plot a map of Cambodia regions (ADM2 level).<br>
-Regions should be grey with a thin red border.</li>
-</ol>
-<div class="cell" data-hash="02_map_type_cache/html/unnamed-chunk-3_34b3531de72ac1672c8db3404184cec0">
-<div class="sourceCode cell-code" id="cb17"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb17-1"><a href="#cb17-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapsf)</span>
-<span id="cb17-2"><a href="#cb17-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="at">col =</span> <span class="st">"grey"</span>, <span class="at">border =</span> <span class="st">"red"</span>, <span class="at">lwd =</span> .<span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="02_map_type_files/figure-html/unnamed-chunk-3-1.png" class="img-fluid" width="768"></p>
-</div>
-</div>
-<ol start="3" type="1">
-<li>Create a map of regional population (<strong>T_TL</strong>).<br>
-Display the legend in the top right corner of the map with a frame.</li>
-</ol>
-<div class="cell" data-hash="02_map_type_cache/html/unnamed-chunk-4_54daeebc171f86c82d5e5aa58ed1a728">
-<div class="sourceCode cell-code" id="cb18"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb18-1"><a href="#cb18-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm)</span>
-<span id="cb18-2"><a href="#cb18-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="st">'T_TL'</span>, <span class="st">"prop"</span>, <span class="at">inches =</span> .<span class="dv">1</span>, <span class="at">leg_pos =</span> <span class="st">"topright"</span>, <span class="at">leg_frame =</span> <span class="cn">TRUE</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="02_map_type_files/figure-html/unnamed-chunk-4-1.png" class="img-fluid" width="768"></p>
-</div>
-</div>
-<ol start="4" type="1">
-<li>Create a map of regional belonging (level 1, <strong>ADM1_EN</strong> variable).<br>
-Do not display any legend.</li>
-</ol>
-<div class="cell" data-hash="02_map_type_cache/html/unnamed-chunk-5_a43ffd01027724137db47e8895932f11">
-<div class="sourceCode cell-code" id="cb19"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb19-1"><a href="#cb19-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="st">"ADM1_EN"</span>, <span class="st">"typo"</span>, <span class="at">lwd =</span> .<span class="dv">2</span>, <span class="at">leg_pos =</span> <span class="cn">NA</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="02_map_type_files/figure-html/unnamed-chunk-5-1.png" class="img-fluid" width="768"></p>
-</div>
-</div>
-<ol start="5" type="1">
-<li>Combine total population and regional belonging on the same map.</li>
-</ol>
-<div class="cell" data-hash="02_map_type_cache/html/unnamed-chunk-6_bafe1764a990fa8a566eeac91b52c67a">
-<div class="sourceCode cell-code" id="cb20"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb20-1"><a href="#cb20-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="st">"ADM1_EN"</span>, <span class="st">"typo"</span>, <span class="at">leg_pos =</span> <span class="cn">NA</span>)</span>
-<span id="cb20-2"><a href="#cb20-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="st">'T_TL'</span>, <span class="st">"prop"</span>, <span class="at">inches =</span> .<span class="dv">1</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="02_map_type_files/figure-html/unnamed-chunk-6-1.png" class="img-fluid" width="768"></p>
-</div>
-</div>
-<div class="cell" data-hash="02_map_type_cache/html/unnamed-chunk-7_47db17a208c3cf17c069c5cafafe497b">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm)</span>
-<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="fu">c</span>(<span class="st">'T_TL'</span>, <span class="st">"ADM1_EN"</span>), <span class="st">"prop_typo"</span>, <span class="at">inches =</span> .<span class="dv">1</span>, <span class="at">leg_pos =</span> <span class="fu">c</span>(<span class="st">"bottomright"</span>, <span class="cn">NA</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="02_map_type_files/figure-html/unnamed-chunk-7-1.png" class="img-fluid" width="768"></p>
-</div>
-</div>
-<ol start="6" type="1">
-<li>Compute the population density for each region and create a map of the population density.</li>
-</ol>
-<div class="cell" data-hash="02_map_type_cache/html/unnamed-chunk-8_b54dbfbc649874f0f8ed8c7bccc5e117">
-<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>khm<span class="sc">$</span>DENS <span class="ot">&lt;-</span> <span class="fl">1e6</span> <span class="sc">*</span> khm<span class="sc">$</span>T_TL <span class="sc">/</span> <span class="fu">as.numeric</span>(<span class="fu">st_area</span>(khm))</span>
-<span id="cb22-2"><a href="#cb22-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="st">"DENS"</span>, <span class="st">"choro"</span>, <span class="at">breaks =</span> <span class="st">"geom"</span>, <span class="at">nbreaks =</span> <span class="dv">5</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="02_map_type_files/figure-html/unnamed-chunk-8-1.png" class="img-fluid" width="768"></p>
-</div>
-</div>
 
 
 </section>
