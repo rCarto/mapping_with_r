@@ -13,9 +13,9 @@ knitr:
 
 `mf_map()` displays map layers on a georeferenced plot. It has three main arguments:
 
-  - `x`, an `sf` object
-  -  `var`, the name(s) of a variable(s) to map
-  -  `type`, the map layer type
+- `x`, an `sf` object
+-  `var`, the name(s) of a variable(s) to map
+-  `type`, the map layer type
 
 
 ## Example dataset
@@ -70,8 +70,8 @@ mf_title("Population distribution in the Lot department")
 
 ## Choropleth Map
 
-In choropleth maps, areas are shaded according to the variation of a quantitative variable. They are used to represent ratios or indices.  
-`mf_map(x, var, type = "choro")` displays choropleth maps . Arguments `nbreaks`, and `breaks` allow to customize the variable classification. `mf_get_breaks()` allows to classify data outside of the function itself. 
+In choropleth maps, areas are shaded according to the variation of a relative quantitative variable. They are used to represent ratios or indices.  
+`mf_map(x, var, type = "choro")` displays choropleth maps . Arguments `nbreaks`, and `breaks` allow to customize the variable classification. 
 
 
 
@@ -112,6 +112,96 @@ image(1:9, 1, as.matrix(1:9), col=mypal, xlab = "", ylab = "", xaxt = "n",
       yaxt = "n",bty = "n")
 ```
 
+### Data classification (or discretization)
+`mf_get_breaks()` allows to classify data outside of the function itself. 
+
+
+```{r}
+#| fig-height: 8
+x <- com$DENS
+summary(x)
+sd(x)
+htitle <- "Population density distribution"
+hlab <- "inh. per km2"
+opar <- par(mar = c(5.1,2.1,2.1,2.1), mfrow = c(3,1))
+hist(
+  x = x, 
+  n = 25,
+  main = htitle, 
+  xlab = hlab,
+  freq = FALSE
+)
+boxplot(x, horizontal = T)
+stripchart(
+  x = x,
+  method = "jitter", 
+  pch = 21,
+  bg = "red", 
+  col = "white",
+  cex = .9
+)
+```
+
+
+This distribution is highly skewed to the left. The geometric progression method is well suited in this case. 
+
+```{r}
+#| fig-height: 6
+bks <- mf_get_breaks(
+  x = x, 
+  nbreaks = 6, 
+  breaks = "geom"
+) 
+cols <- mf_get_pal(
+  n = 6, 
+  palette = "SunsetDark",
+  rev = TRUE
+)
+par(mfrow = c(1,1))
+hist(
+  x = x, 
+  breaks = bks, 
+  col = cols, 
+  xlab = hlab, 
+  freq = F, 
+  axes = FALSE, 
+  ylab = "",
+  main = htitle, 
+  border = "grey80", 
+  lwd = 3, 
+  ylim = c(-0.01, 0.03), 
+  xlim = c(0,600)
+)
+stripchart(
+  x = x, 
+  pch = 21,
+  bg = "grey20", 
+  col = "white",
+  at = -0.005, 
+  jitter = 0.0025, 
+  add = TRUE,
+  method = "jitter", 
+  cex = .7,
+  xlab = ""
+)
+axis(side = 1, at = seq(0,600,100))
+points(x = bks, y = rep(0, length(bks)), pch = "|")
+par(opar)
+```
+
+```{r}
+mf_map(
+  x = com,
+  var = "DENS",
+  type = "choro",
+  breaks = bks,
+  pal = cols,
+  lwd = 1,
+  leg_title = "Population density\n(inh. per km2)", 
+  leg_val_rnd = 0
+)
+mf_title("Population distribution in the Lot department")
+```
 
 
 
@@ -188,7 +278,7 @@ mf_map(
 )
 mf_title("Population")
 ```
-  
+
 ## Exercice
 
 The **khm** project contain a toy dataset on Cambodia. You have to download and unzip it.   
