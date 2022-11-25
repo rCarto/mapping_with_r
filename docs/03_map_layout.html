@@ -646,81 +646,27 @@ World Map Inset
 </section>
 <section id="exercice" class="level2" data-number="3.17">
 <h2 data-number="3.17" class="anchored" data-anchor-id="exercice"><span class="header-section-number">3.17</span> Exercice</h2>
+<p>Open the <strong>khm</strong> project.</p>
 <ol type="1">
-<li>Import the <strong>khm</strong> and <strong>land</strong> layers from the geopackage file <strong>data/khm.gpkg</strong>.</li>
+<li>Import the <strong>khm</strong>, <strong>land</strong> and <strong>water</strong> layers from the geopackage file <strong>data/khm.gpkg</strong>.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(sf)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stderr">
-<pre><code>#&gt; Linking to GEOS 3.9.0, GDAL 3.2.2, PROJ 7.2.1; sf_use_s2() is TRUE</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb23"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb23-1"><a href="#cb23-1" aria-hidden="true" tabindex="-1"></a>khm <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/khm.gpkg"</span>, <span class="st">"khm"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Reading layer `khm' from data source 
-#&gt;   `/home/tim/Documents/prz/Cambodge/mapping_with_r/data/khm.gpkg' 
-#&gt;   using driver `GPKG'
-#&gt; Simple feature collection with 197 features and 9 fields
-#&gt; Geometry type: MULTIPOLYGON
-#&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: 211534.7 ymin: 1149105 xmax: 784612.1 ymax: 1625495
-#&gt; Projected CRS: WGS 84 / UTM zone 48N</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb25"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb25-1"><a href="#cb25-1" aria-hidden="true" tabindex="-1"></a>land <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/khm.gpkg"</span>, <span class="st">"land"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Reading layer `land' from data source 
-#&gt;   `/home/tim/Documents/prz/Cambodge/mapping_with_r/data/khm.gpkg' 
-#&gt;   using driver `GPKG'
-#&gt; Simple feature collection with 1 feature and 0 fields
-#&gt; Geometry type: MULTIPOLYGON
-#&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: -309078.2 ymin: 623720.5 xmax: 986103.6 ymax: 2584098
-#&gt; Projected CRS: WGS 84 / UTM zone 48N</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb27"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb27-1"><a href="#cb27-1" aria-hidden="true" tabindex="-1"></a>water <span class="ot">&lt;-</span> <span class="fu">st_read</span>(<span class="st">"data/khm.gpkg"</span>, <span class="st">"water"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; Reading layer `water' from data source 
-#&gt;   `/home/tim/Documents/prz/Cambodge/mapping_with_r/data/khm.gpkg' 
-#&gt;   using driver `GPKG'
-#&gt; Simple feature collection with 1 feature and 0 fields
-#&gt; Geometry type: MULTIPOLYGON
-#&gt; Dimension:     XY
-#&gt; Bounding box:  xmin: 357498 ymin: 1372387 xmax: 456286.7 ymax: 1467168
-#&gt; Projected CRS: WGS 84 / UTM zone 48N</code></pre>
-</div>
+
 </div>
 <ol start="2" type="1">
-<li>Compute the sex ratio of Cambodian regions.</li>
+<li>Compute the sex ratio of Cambodian municipalities and districts.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb29"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb29-1"><a href="#cb29-1" aria-hidden="true" tabindex="-1"></a>khm<span class="sc">$</span>sex_ratio <span class="ot">&lt;-</span> khm<span class="sc">$</span>M_TL <span class="sc">/</span> khm<span class="sc">$</span>F_TL</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
 <ol start="3" type="1">
-<li>Create a map of the sex ratio</li>
+<li>Create a map of the sex ratio of Cambodian municipalities and districts.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb30"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb30-1"><a href="#cb30-1" aria-hidden="true" tabindex="-1"></a><span class="fu">hist</span>(khm<span class="sc">$</span>sex_ratio)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="03_map_layout_files/figure-html/unnamed-chunk-14-1.png" class="img-fluid" width="480"></p>
-</div>
-<div class="sourceCode cell-code" id="cb31"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb31-1"><a href="#cb31-1" aria-hidden="true" tabindex="-1"></a><span class="fu">summary</span>(khm<span class="sc">$</span>sex_ratio)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt;    Min. 1st Qu.  Median    Mean 3rd Qu.    Max. 
-#&gt;  0.8696  0.9529  0.9704  0.9768  0.9959  1.1085</code></pre>
-</div>
-<div class="sourceCode cell-code" id="cb33"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb33-1"><a href="#cb33-1" aria-hidden="true" tabindex="-1"></a><span class="fu">boxplot</span>(khm<span class="sc">$</span>sex_ratio)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="03_map_layout_files/figure-html/unnamed-chunk-14-2.png" class="img-fluid" width="480"></p>
-</div>
-<div class="sourceCode cell-code" id="cb34"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb34-1"><a href="#cb34-1" aria-hidden="true" tabindex="-1"></a><span class="fu">library</span>(mapsf)</span>
-<span id="cb34-2"><a href="#cb34-2" aria-hidden="true" tabindex="-1"></a>bks <span class="ot">&lt;-</span> <span class="fu">mf_get_breaks</span>(khm<span class="sc">$</span>sex_ratio, <span class="at">breaks =</span> <span class="st">"msd"</span>, <span class="at">central =</span> T)</span>
-<span id="cb34-3"><a href="#cb34-3" aria-hidden="true" tabindex="-1"></a>pals <span class="ot">&lt;-</span> <span class="fu">mf_get_pal</span>(<span class="at">n =</span> <span class="fu">c</span>(<span class="dv">3</span>,<span class="dv">3</span>), <span class="at">palette =</span> <span class="fu">c</span>(<span class="st">'Peach'</span>, <span class="st">'Teal'</span>), <span class="at">neutral =</span> <span class="st">"grey90"</span>)</span>
-<span id="cb34-4"><a href="#cb34-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="st">'sex_ratio'</span>,<span class="st">"choro"</span>, <span class="at">breaks =</span> bks, <span class="at">pal =</span> pals, <span class="at">leg_val_rnd =</span> <span class="dv">3</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="03_map_layout_files/figure-html/unnamed-chunk-14-3.png" class="img-fluid" width="480"></p>
-</div>
+
 </div>
 <ol start="4" type="1">
-<li>Add all relevant layout elements</li>
+<li>Add all relevant layout elements.</li>
 </ol>
 <div class="callout-note callout callout-style-simple no-icon">
 <div class="callout-body d-flex">
@@ -730,11 +676,14 @@ World Map Inset
 <div class="callout-body-container">
 <p>You can also add the land around Cambodia and the Tonlé Sap lake, for example:</p>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb35"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb35-1"><a href="#cb35-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_init</span>(khm)</span>
-<span id="cb35-2"><a href="#cb35-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(land, <span class="at">add =</span> T, <span class="at">col =</span> <span class="st">"#f2efe9"</span>, <span class="at">border =</span> <span class="st">"#f2efe9"</span>)</span>
-<span id="cb35-3"><a href="#cb35-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(water, <span class="at">add =</span> T, <span class="at">col =</span> <span class="st">"lightblue"</span>, <span class="at">border =</span> <span class="st">'lightblue'</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
-<span id="cb35-4"><a href="#cb35-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="at">add =</span> T, <span class="at">col =</span> <span class="st">"#c2dcb6"</span>, <span class="at">border =</span> <span class="st">"grey50"</span>)</span>
-<span id="cb35-5"><a href="#cb35-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Cambodia"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+<div class="sourceCode cell-code" id="cb21"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb21-1"><a href="#cb21-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_init</span>(khm)</span>
+<span id="cb21-2"><a href="#cb21-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(land, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"#f25050"</span>, </span>
+<span id="cb21-3"><a href="#cb21-3" aria-hidden="true" tabindex="-1"></a>       <span class="at">border =</span> <span class="st">"#f2efe9"</span>)</span>
+<span id="cb21-4"><a href="#cb21-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(water, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"lightblue"</span>,</span>
+<span id="cb21-5"><a href="#cb21-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">border =</span> <span class="st">'lightblue'</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
+<span id="cb21-6"><a href="#cb21-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="at">add =</span> <span class="cn">TRUE</span>, <span class="at">col =</span> <span class="st">"#c2dcb6"</span>, </span>
+<span id="cb21-7"><a href="#cb21-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">border =</span> <span class="st">"grey50"</span>)</span>
+<span id="cb21-8"><a href="#cb21-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Cambodia"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
 <div class="cell-output-display">
 <p><img src="03_map_layout_files/figure-html/unnamed-chunk-15-1.png" class="img-fluid" width="288"></p>
 </div>
@@ -743,91 +692,50 @@ World Map Inset
 </div>
 </div>
 <ol start="5" type="1">
-<li>Use a personalized theme</li>
+<li>Use a personalized theme.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb36"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb36-1"><a href="#cb36-1" aria-hidden="true" tabindex="-1"></a>my_theme <span class="ot">&lt;-</span> <span class="fu">mf_theme</span>(<span class="at">x =</span> <span class="st">"default"</span>, <span class="at">bg =</span> <span class="st">"lightblue"</span>, </span>
-<span id="cb36-2"><a href="#cb36-2" aria-hidden="true" tabindex="-1"></a>                     <span class="at">tab =</span> <span class="cn">FALSE</span>, <span class="at">mar =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="fl">1.2</span>,<span class="dv">0</span>))</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+
 </div>
 <ol start="6" type="1">
-<li>Add an inset of Pnomh Penh Region</li>
-</ol>
-<div class="cell">
-<div class="sourceCode cell-code" id="cb37"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb37-1"><a href="#cb37-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_init</span>(khm, <span class="at">theme =</span> my_theme, <span class="at">expandBB =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">5</span>))</span>
-<span id="cb37-2"><a href="#cb37-2" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(land, <span class="at">add =</span> T, <span class="at">col =</span> <span class="st">"#f2efe9"</span>, <span class="at">border =</span> <span class="cn">NA</span>)</span>
-<span id="cb37-3"><a href="#cb37-3" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(water, <span class="at">add =</span> T, <span class="at">col =</span> <span class="st">"lightblue"</span>, <span class="at">border =</span> <span class="st">'lightblue'</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
-<span id="cb37-4"><a href="#cb37-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="st">'sex_ratio'</span>,<span class="st">"choro"</span>, <span class="at">border =</span> <span class="st">"grey50"</span>,</span>
-<span id="cb37-5"><a href="#cb37-5" aria-hidden="true" tabindex="-1"></a>       <span class="at">breaks =</span> bks, <span class="at">pal =</span> pals,  <span class="at">leg_pos =</span> <span class="st">"bottomright"</span>,</span>
-<span id="cb37-6"><a href="#cb37-6" aria-hidden="true" tabindex="-1"></a>       <span class="at">leg_val_rnd =</span> <span class="dv">3</span>, <span class="at">add =</span> <span class="cn">TRUE</span>)</span>
-<span id="cb37-7"><a href="#cb37-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_on</span>(<span class="at">x =</span> khm[khm<span class="sc">$</span>ADM1_EN<span class="sc">==</span><span class="st">"Phnom Penh"</span>, ], <span class="at">cex =</span> .<span class="dv">3</span>)</span>
-<span id="cb37-8"><a href="#cb37-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_init</span>(khm[khm<span class="sc">$</span>ADM1_EN<span class="sc">==</span><span class="st">"Phnom Penh"</span>, ], <span class="at">theme =</span> my_theme)</span>
-<span id="cb37-9"><a href="#cb37-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="st">'sex_ratio'</span>,<span class="st">"choro"</span>, <span class="at">breaks =</span> bks, <span class="at">pal =</span> pals,  <span class="at">border =</span> <span class="st">"grey50"</span>,</span>
-<span id="cb37-10"><a href="#cb37-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">add =</span> T, <span class="at">leg_pos =</span> <span class="cn">NA</span>)</span>
-<span id="cb37-11"><a href="#cb37-11" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Phnom Penh"</span>, <span class="at">fg =</span> <span class="st">"white"</span>)</span>
-<span id="cb37-12"><a href="#cb37-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_off</span>()</span>
-<span id="cb37-13"><a href="#cb37-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">'Sex Ratio'</span>, <span class="at">fg =</span> <span class="st">"white"</span>)</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output-display">
-<p><img src="03_map_layout_files/figure-html/unnamed-chunk-17-1.png" class="img-fluid" width="480"></p>
-</div>
-</div>
-<ol start="7" type="1">
 <li>Export the map in PNG format with a width of 800 pixels.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb38"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb38-1"><a href="#cb38-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_export</span>(khm, <span class="at">filename =</span> <span class="st">"img/khm.png"</span>, </span>
-<span id="cb38-2"><a href="#cb38-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">width =</span> <span class="dv">800</span>, <span class="at">expandBB =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">5</span>), </span>
-<span id="cb38-3"><a href="#cb38-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">theme =</span> my_theme)</span>
-<span id="cb38-4"><a href="#cb38-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(land,  <span class="at">col =</span> <span class="st">"#f2efe9"</span>, <span class="at">border =</span> <span class="cn">NA</span>, <span class="at">add =</span> T)</span>
-<span id="cb38-5"><a href="#cb38-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(water, <span class="at">add =</span> T, <span class="at">col =</span> <span class="st">"lightblue"</span>, <span class="at">border =</span> <span class="st">'lightblue'</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
-<span id="cb38-6"><a href="#cb38-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="st">'sex_ratio'</span>,<span class="st">"choro"</span>, <span class="at">breaks =</span> bks, <span class="at">pal =</span> pals, </span>
-<span id="cb38-7"><a href="#cb38-7" aria-hidden="true" tabindex="-1"></a>       <span class="at">leg_val_rnd =</span> <span class="dv">3</span>, <span class="at">add =</span> T,  <span class="at">border =</span> <span class="st">"grey50"</span>)</span>
-<span id="cb38-8"><a href="#cb38-8" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_on</span>(<span class="at">x =</span> khm[khm<span class="sc">$</span>ADM1_EN<span class="sc">==</span><span class="st">"Phnom Penh"</span>, ], <span class="at">cex =</span> .<span class="dv">3</span>)</span>
-<span id="cb38-9"><a href="#cb38-9" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_init</span>(khm[khm<span class="sc">$</span>ADM1_EN<span class="sc">==</span><span class="st">"Phnom Penh"</span>, ], <span class="at">theme =</span> my_theme)</span>
-<span id="cb38-10"><a href="#cb38-10" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="st">'sex_ratio'</span>,<span class="st">"choro"</span>, <span class="at">breaks =</span> bks, <span class="at">pal =</span> pals,  <span class="at">border =</span> <span class="st">"grey50"</span>,</span>
-<span id="cb38-11"><a href="#cb38-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">add =</span> T, <span class="at">leg_pos =</span> <span class="cn">NA</span>)</span>
-<span id="cb38-12"><a href="#cb38-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Phnom Penh"</span>, <span class="at">fg =</span> <span class="st">"white"</span>)</span>
-<span id="cb38-13"><a href="#cb38-13" aria-hidden="true" tabindex="-1"></a><span class="co"># box(which = "plot")</span></span>
-<span id="cb38-14"><a href="#cb38-14" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_off</span>()</span>
-<span id="cb38-15"><a href="#cb38-15" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">'Sex Ratio'</span>, <span class="at">fg =</span> <span class="st">"white"</span>)</span>
-<span id="cb38-16"><a href="#cb38-16" aria-hidden="true" tabindex="-1"></a></span>
-<span id="cb38-17"><a href="#cb38-17" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; png 
-#&gt;   2</code></pre>
+
 </div>
-</div>
-<p><img src="img/khm.png" class="img-fluid"></p>
-<ol start="8" type="1">
-<li>Create the same map combining the population and the sex ratio</li>
+<!-- ![](img/khm.png) -->
+<ol start="7" type="1">
+<li>Create and export the same map combining the population and the sex ratio.</li>
 </ol>
 <div class="cell">
-<div class="sourceCode cell-code" id="cb40"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb40-1"><a href="#cb40-1" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_export</span>(khm, <span class="at">filename =</span> <span class="st">"img/khm2.png"</span>, </span>
-<span id="cb40-2"><a href="#cb40-2" aria-hidden="true" tabindex="-1"></a>          <span class="at">width =</span> <span class="dv">800</span>, <span class="at">expandBB =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">0</span>,<span class="dv">0</span>,.<span class="dv">5</span>), </span>
-<span id="cb40-3"><a href="#cb40-3" aria-hidden="true" tabindex="-1"></a>          <span class="at">theme =</span> my_theme)</span>
-<span id="cb40-4"><a href="#cb40-4" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(land,  <span class="at">col =</span> <span class="st">"#f2efe9"</span>, <span class="at">border =</span> <span class="cn">NA</span>, <span class="at">add =</span> T)</span>
-<span id="cb40-5"><a href="#cb40-5" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(water, <span class="at">add =</span> T, <span class="at">col =</span> <span class="st">"lightblue"</span>, <span class="at">border =</span> <span class="st">'lightblue'</span>, <span class="at">lwd =</span> <span class="fl">1.5</span>)</span>
-<span id="cb40-6"><a href="#cb40-6" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="at">add =</span> T, <span class="at">col =</span> <span class="st">"#c2dcb6"</span>, <span class="at">lwd =</span>.<span class="dv">7</span>, <span class="at">border =</span> <span class="st">"grey50"</span>)</span>
-<span id="cb40-7"><a href="#cb40-7" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="fu">c</span>(<span class="st">'T_TL'</span>, <span class="st">'sex_ratio'</span>),<span class="st">"prop_choro"</span>, </span>
-<span id="cb40-8"><a href="#cb40-8" aria-hidden="true" tabindex="-1"></a>       <span class="at">breaks =</span> bks, <span class="at">pal =</span> pals, </span>
-<span id="cb40-9"><a href="#cb40-9" aria-hidden="true" tabindex="-1"></a>       <span class="at">leg_val_rnd =</span> <span class="fu">c</span>(<span class="dv">0</span>,<span class="dv">3</span>),</span>
-<span id="cb40-10"><a href="#cb40-10" aria-hidden="true" tabindex="-1"></a>       <span class="at">leg_pos =</span> <span class="fu">c</span>(<span class="st">"bottomright"</span>, <span class="fu">c</span>(<span class="fl">901474.8</span>, <span class="dv">1307543</span>)),</span>
-<span id="cb40-11"><a href="#cb40-11" aria-hidden="true" tabindex="-1"></a>       <span class="at">inches =</span> .<span class="dv">2</span>)</span>
-<span id="cb40-12"><a href="#cb40-12" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_on</span>(<span class="at">x =</span> khm[khm<span class="sc">$</span>ADM1_EN<span class="sc">==</span><span class="st">"Phnom Penh"</span>, ], <span class="at">cex =</span> .<span class="dv">3</span>)</span>
-<span id="cb40-13"><a href="#cb40-13" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_init</span>(khm[khm<span class="sc">$</span>ADM1_EN<span class="sc">==</span><span class="st">"Phnom Penh"</span>, ], <span class="at">theme =</span> my_theme)</span>
-<span id="cb40-14"><a href="#cb40-14" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="at">add =</span> T, <span class="at">col =</span> <span class="st">"#c2dcb6"</span>, <span class="at">lwd =</span>.<span class="dv">7</span>, <span class="at">border =</span> <span class="st">"grey60"</span>)</span>
-<span id="cb40-15"><a href="#cb40-15" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_map</span>(khm, <span class="fu">c</span>(<span class="st">'T_TL'</span>, <span class="st">'sex_ratio'</span>),<span class="st">"prop_choro"</span>, <span class="at">inches =</span> .<span class="dv">2</span>,</span>
-<span id="cb40-16"><a href="#cb40-16" aria-hidden="true" tabindex="-1"></a>       <span class="at">breaks =</span> bks, <span class="at">pal =</span> pals, <span class="at">leg_pos =</span> <span class="fu">c</span>(<span class="cn">NA</span>, <span class="cn">NA</span>))</span>
-<span id="cb40-17"><a href="#cb40-17" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">"Phnom Penh"</span>, <span class="at">fg =</span> <span class="st">"white"</span>)</span>
-<span id="cb40-18"><a href="#cb40-18" aria-hidden="true" tabindex="-1"></a><span class="co"># box(which = "plot")</span></span>
-<span id="cb40-19"><a href="#cb40-19" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_inset_off</span>()</span>
-<span id="cb40-20"><a href="#cb40-20" aria-hidden="true" tabindex="-1"></a><span class="fu">mf_title</span>(<span class="st">'Pop &amp; Sex Ratio'</span>, <span class="at">fg =</span> <span class="st">"white"</span>)</span>
-<span id="cb40-21"><a href="#cb40-21" aria-hidden="true" tabindex="-1"></a><span class="fu">dev.off</span>()</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
-<div class="cell-output cell-output-stdout">
-<pre><code>#&gt; png 
-#&gt;   2</code></pre>
+
+</div>
+<!-- ![](img/khm2.png) -->
+<ol start="8" type="1">
+<li>Add an inset on the Pnomh Penh province.</li>
+</ol>
+<div class="callout-note callout callout-style-simple no-icon">
+<div class="callout-body d-flex">
+<div class="callout-icon-container">
+<i class="callout-icon no-icon"></i>
+</div>
+<div class="callout-body-container">
+<ul>
+<li><p>See the <code>expandBB</code> argument from <code>mf_export()</code> (or <code>mf_init()</code>) to add space around the main map region.<br>
+</p></li>
+<li><p>See the <code>leg_pos</code> argument from <code>mf_map()</code> to use a custom position for legends.</p></li>
+<li><p>Phnom Penh province:</p>
+<div class="cell">
+<div class="sourceCode cell-code" id="cb22"><pre class="sourceCode r code-with-copy"><code class="sourceCode r"><span id="cb22-1"><a href="#cb22-1" aria-hidden="true" tabindex="-1"></a>PP <span class="ot">&lt;-</span> khm[khm<span class="sc">$</span>ADM1_EN<span class="sc">==</span><span class="st">"Phnom Penh"</span>, ]</span></code><button title="Copy to Clipboard" class="code-copy-button"><i class="bi"></i></button></pre></div>
+</div></li>
+</ul>
 </div>
 </div>
-<p><img src="img/khm2.png" class="img-fluid"></p>
+</div>
+<div class="cell">
+
+</div>
+<!-- ![](img/khm3.png) -->
 
 
 </section>

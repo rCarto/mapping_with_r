@@ -191,33 +191,25 @@ mf_title("Population")
   
 ## Exercice
 
-The **khm** project contain a toy dataset on Cambodia. You have download and unzip it.    
+The **khm** project contain a toy dataset on Cambodia. You have to download and unzip it.   
+
 [Download the project](khm.zip){.btn .btn-primary .btn-sm role="button"}  
+
 You can then open the project and do the exercise in it.
 
 
-1. Import the **khm** layer from the geopackage file **data/khm.gpkg**.
+1. Import the **khm** layer from the geopackage file **data/khm.gpkg**.  
+This is a layer of Cambodian municipalities and districts (ADM2 level). **F_TL**, **M_TL** and **T_TL** are respectively female population, male population and total population (year of reference 2016). **ADM1_EN** is the name of provinces (ADM1 level) of belonging of municipalities and districts. 
 
-2. Plot a map of Cambodia regions (ADM2 level).  
-Regions should be grey with a thin red border.  
+2. Plot a map of Cambodia municipalities and districts.    
+Municipalities and districts should be grey with a thin red border.  
 
-3. Create a map of regional population (**T_TL**).  
-Display the legend in the top right corner of the map with a frame. 
+3. Create a map of population (**T_TL**).  
+Display the legend in the top right corner of the map within a frame. 
 
-4. Create a map of regional belonging (level 1, **ADM1_EN** variable).  
+4. Create a map of municipalities and districts indicating their province of belonging (**ADM1_EN** variable).  
 Do not display any legend.
 
-5. Combine total population and regional belonging on the same map.
+5. Combine total population and province of belonging on the same map.
 
-6. Compute the population density for each region and create a map of the population density. 
-
-
-
-
-
-
-
-
-
-
-
+6. Compute the population density for municipalities and districts and create a map of the population density. 

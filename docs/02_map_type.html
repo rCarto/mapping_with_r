@@ -401,19 +401,20 @@ code span.wa { color: #60a0b0; font-weight: bold; font-style: italic; } /* Warni
 </section>
 <section id="exercice" class="level2" data-number="2.8">
 <h2 data-number="2.8" class="anchored" data-anchor-id="exercice"><span class="header-section-number">2.8</span> Exercice</h2>
-<p>The <strong>khm</strong> project contain a toy dataset on Cambodia. You have download and unzip it.<br>
-<a href="khm.zip" class="btn btn-primary btn-sm" role="button">Download the project</a><br>
-You can then open the project and do the exercise in it.</p>
+<p>The <strong>khm</strong> project contain a toy dataset on Cambodia. You have to download and unzip it.</p>
+<p><a href="khm.zip" class="btn btn-primary btn-sm" role="button">Download the project</a></p>
+<p>You can then open the project and do the exercise in it.</p>
 <ol type="1">
-<li><p>Import the <strong>khm</strong> layer from the geopackage file <strong>data/khm.gpkg</strong>.</p></li>
-<li><p>Plot a map of Cambodia regions (ADM2 level).<br>
-Regions should be grey with a thin red border.</p></li>
-<li><p>Create a map of regional population (<strong>T_TL</strong>).<br>
-Display the legend in the top right corner of the map with a frame.</p></li>
-<li><p>Create a map of regional belonging (level 1, <strong>ADM1_EN</strong> variable).<br>
+<li><p>Import the <strong>khm</strong> layer from the geopackage file <strong>data/khm.gpkg</strong>.<br>
+This is a layer of Cambodian municipalities and districts (ADM2 level). <strong>F_TL</strong>, <strong>M_TL</strong> and <strong>T_TL</strong> are respectively female population, male population and total population (year of reference 2016). <strong>ADM1_EN</strong> is the name of provinces (ADM1 level) of belonging of municipalities and districts.</p></li>
+<li><p>Plot a map of Cambodia municipalities and districts.<br>
+Municipalities and districts should be grey with a thin red border.</p></li>
+<li><p>Create a map of population (<strong>T_TL</strong>).<br>
+Display the legend in the top right corner of the map within a frame.</p></li>
+<li><p>Create a map of municipalities and districts indicating their province of belonging (<strong>ADM1_EN</strong> variable).<br>
 Do not display any legend.</p></li>
-<li><p>Combine total population and regional belonging on the same map.</p></li>
-<li><p>Compute the population density for each region and create a map of the population density.</p></li>
+<li><p>Combine total population and province of belonging on the same map.</p></li>
+<li><p>Compute the population density for municipalities and districts and create a map of the population density.</p></li>
 </ol>
 
 
